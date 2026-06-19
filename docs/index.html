@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jurgensen · Bid Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Jurgensen brand: green #149947, charcoal #1f1f1f, gray #58585a */
+    --navy:#1f1f1f; --navy2:#149947; --slate:#58585a; --ink:#1f1f1f;
+    --amber:#149947; --green:#149947; --red:#d4453a; --yellow:#e0a008;
+    --line:#e3e8ee; --bg:#f5f6f5; --card:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);}
+  header{background:var(--navy);color:#fff;padding:14px 28px;display:flex;align-items:center;gap:13px;
+         border-bottom:3px solid var(--green);box-shadow:0 2px 12px rgba(0,0,0,.18)}
+  header .logo{width:42px;height:42px;border-radius:7px;background:var(--green);color:#fff;
+       font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:27px;
+       display:flex;align-items:center;justify-content:center;line-height:1;flex:none}
+  header .co{font-family:"Rubik",sans-serif;font-weight:700;font-size:18px;letter-spacing:1.6px;line-height:1.05}
+  header .prod{font-size:11.5px;color:#9bd3ad;letter-spacing:.6px;margin-top:3px;text-transform:uppercase}
+  header .tag{font-size:12.5px;color:#b9bdb9;align-self:center;margin-left:8px}
+  header .badge{margin-left:auto;font-size:11px;color:#bfe3c8;border:1px solid #2f7d46;padding:3px 10px;border-radius:20px;letter-spacing:.3px}
+  .wrap{max-width:980px;margin:26px auto;padding:0 20px}
+  .search{position:relative}
+  .search input{width:100%;padding:14px 16px;font-size:16px;border:1px solid var(--line);border-radius:10px;
+                background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .search input:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px rgba(22,57,92,.12)}
+  .results{position:absolute;top:54px;left:0;right:0;background:#fff;border:1px solid var(--line);
+           border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:5;overflow:hidden;display:none}
+  .results div{padding:10px 16px;cursor:pointer;border-bottom:1px solid #f0f3f6;font-size:14px}
+  .results div:hover{background:#f3f7fb}
+  .results .code{font-weight:600;color:var(--navy2);font-variant-numeric:tabular-nums}
+  .results .n{float:right;color:var(--slate);font-size:12px}
+  .hint{color:var(--slate);font-size:13.5px;margin:10px 4px 0}
+  .chips{margin:12px 2px 0;display:flex;gap:8px;flex-wrap:wrap}
+  .chips span{font-size:12px;color:var(--slate);margin-right:2px}
+  .chip{font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 12px;cursor:pointer}
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .panel{display:none;margin-top:24px}
+  .head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .head .code{font-size:13px;color:var(--slate);font-weight:600;letter-spacing:.5px}
+  .head h2{margin:2px 0 0;font-size:22px;font-weight:700;font-family:"Rubik",sans-serif}
+  .head .meta{color:var(--slate);font-size:13px;margin-left:auto;text-align:right;line-height:1.5}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-top:18px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+        box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .card h3{margin:0 0 14px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--slate)}
+  label{display:block;font-size:12.5px;color:var(--slate);margin:0 0 5px}
+  .field{margin-bottom:14px}
+  .field input{width:100%;padding:11px 12px;font-size:15px;border:1px solid var(--line);border-radius:8px}
+  .field input:focus{outline:none;border-color:var(--navy2)}
+  .verdict{border-radius:10px;padding:16px;text-align:center;color:#fff;margin-top:4px;transition:.2s}
+  .verdict .pct{font-size:30px;font-weight:700;line-height:1.1}
+  .verdict .lbl{font-size:13px;opacity:.95;margin-top:3px}
+  .verdict.idle{background:#aeb8c2}
+  .verdict.low{background:var(--green)} .verdict.mid{background:var(--yellow)} .verdict.high{background:var(--red)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .stat{background:#f7f9fb;border:1px solid var(--line);border-radius:9px;padding:11px 12px}
+  .stat .k{font-size:11px;color:var(--slate);text-transform:uppercase;letter-spacing:.4px}
+  .stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums;margin-top:3px}
+  .stat.hl{background:#ecf7ef;border-color:#bfe3c8}
+  .chartwrap{margin-top:6px}
+  svg{width:100%;display:block}
+  .axis{fill:var(--slate);font-size:10px} .bar{fill:#b6d8bf} .bar:hover{fill:var(--green)}
+  .yourline{stroke:var(--ink);stroke-width:2;stroke-dasharray:4 3}
+  .caption{color:var(--slate);font-size:12px;margin-top:8px;text-align:center}
+  footer{color:var(--slate);font-size:12px;text-align:center;margin:30px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">J</div>
+  <div>
+    <div class="co">JURGENSEN</div>
+    <div class="prod">Bid Intelligence</div>
+  </div>
+  <span class="tag">ODOT historical bid benchmarking</span>
+  <span class="badge">prototype · GCM</span>
+</header>
+
+<div class="wrap">
+  <div class="search">
+    <input id="q" placeholder="Search a pay item — try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
+    <div class="results" id="results"></div>
+  </div>
+  <div class="hint" id="hint">Loading bid history…</div>
+  <div class="chips" id="chips"></div>
+
+  <div class="panel" id="panel">
+    <div class="head">
+      <div>
+        <div class="code" id="p-code"></div>
+        <h2 id="p-desc"></h2>
+      </div>
+      <div class="meta" id="p-meta"></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Where does your number land?</h3>
+        <div class="field">
+          <label>Your unit price ($ per <span id="u1">unit</span>)</label>
+          <input id="yourprice" type="number" step="0.01" placeholder="e.g. 95.00">
+        </div>
+        <div class="field">
+          <label>Quantity / takeoff (optional)</label>
+          <input id="yourqty" type="number" step="1" placeholder="e.g. 4200">
+        </div>
+        <div class="verdict idle" id="verdict">
+          <div class="pct" id="v-pct">—</div>
+          <div class="lbl" id="v-lbl">Enter a unit price to benchmark it</div>
+        </div>
+        <div id="extension" class="caption"></div>
+      </div>
+
+      <div class="card">
+        <h3>Historical unit-price distribution</h3>
+        <div class="stats" id="stats"></div>
+        <div class="chartwrap"><svg id="hist" viewBox="0 0 560 200" preserveAspectRatio="none"></svg></div>
+        <div class="caption" id="hist-cap"></div>
+        <h3 style="margin-top:20px">Median by year</h3>
+        <div class="chartwrap"><svg id="trend" viewBox="0 0 560 150" preserveAspectRatio="none"></svg></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Source: Ohio DOT Official Bid Tabulations (public), 2023–2025. Prototype for evaluation — not for bid submission.</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const money = n => n==null ? "—" : "$"+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+let STATS = null, INDEX = [];
+
+// Featured items shown as quick-pick chips on load.
+const FEATURED = ["441E70000","254E01000","301E56000","203E10000","304E20000","614E11000"];
+
+// ---- load search index once (static JSON) ----
+(async function init(){
+  try{
+    INDEX = await fetch("data/index.json").then(r=>r.json());
+    $("#hint").textContent = `Search ${INDEX.length.toLocaleString()} ODOT pay items by code or description. Data: Official ODOT Bid Tabulations, 2023–2025.`;
+    const byCode = Object.fromEntries(INDEX.map(it=>[it.code,it]));
+    const chips = FEATURED.map(c=>byCode[c]).filter(Boolean);
+    if(chips.length){
+      $("#chips").innerHTML = "<span>Try:</span>" + chips.map(it=>
+        `<span class="chip" data-code="${it.code}">${(it.desc||it.code).split(",")[0].slice(0,28)}</span>`).join("");
+      $("#chips").querySelectorAll(".chip").forEach(c=>c.onclick=()=>select(c.dataset.code));
+    }
+  }catch(e){ $("#hint").textContent="Could not load bid data."; }
+})();
+
+// ---- search (client-side filter of the index) ----
+let t;
+$("#q").addEventListener("input", e=>{
+  clearTimeout(t); const q=e.target.value.trim().toLowerCase();
+  if(q.length<2){ $("#results").style.display="none"; return; }
+  t=setTimeout(()=>{
+    const r = INDEX.filter(it =>
+        it.code.toLowerCase().includes(q) || (it.desc||"").toLowerCase().includes(q)
+      ).slice(0,25);
+    const box=$("#results");
+    box.innerHTML = r.map(it=>`<div data-code="${it.code}">
+        <span class="code">${it.code}</span> ${it.desc||""}
+        <span class="n">${it.n} bids · ${it.unit||""}</span></div>`).join("");
+    box.style.display = r.length? "block":"none";
+    box.querySelectorAll("div").forEach(d=>d.onclick=()=>select(d.dataset.code));
+  },140);
+});
+
+async function select(code){
+  $("#results").style.display="none"; $("#q").value="";
+  STATS = await fetch("data/items/"+code+".json").then(r=>r.json());
+  const s=STATS;
+  $("#p-code").textContent=s.item;
+  $("#p-desc").textContent=s.description||s.item;
+  $("#u1").textContent=s.unit||"unit";
+  $("#p-meta").innerHTML = s.count
+     ? `${s.count.toLocaleString()} bid observations<br>${s.window?s.window[0]+" → "+s.window[1]:""}`
+     : "no data";
+  renderStats(s); renderHist(s); renderTrend(s.trend||[], s.unit);
+  $("#panel").style.display="block"; $("#hint").style.display="none"; $("#chips").style.display="none";
+  $("#yourprice").value=""; $("#yourqty").value=""; benchmark();
+  $("#panel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderStats(s){
+  if(!s.count){ $("#stats").innerHTML="<div class='stat'>No bids found.</div>"; return; }
+  const rows=[["Min",s.min],["25th %ile",s.p25],["Median",s.median,true],
+             ["75th %ile",s.p75],["Max",s.max],["Wtd avg",s.wavg]];
+  $("#stats").innerHTML = rows.map(([k,v,hl])=>
+    `<div class="stat ${hl?'hl':''}"><div class="k">${k}</div><div class="v">${money(v)}</div></div>`).join("");
+}
+
+function renderHist(s){
+  const svg=$("#hist"); if(!s.count){svg.innerHTML="";$("#hist-cap").textContent="";return;}
+  const W=560,H=200,pad=24, p=s.prices;            // p is sorted ascending
+  // Clip the chart domain to the 2nd–98th percentile so outliers (tiny-quantity
+  // jobs that bid wildly high/low) don't squash the meaningful distribution.
+  const at=f=>p[Math.min(p.length-1,Math.max(0,Math.round(f*(p.length-1))))];
+  let lo=at(0.02), hi=at(0.98); if(hi<=lo){lo=s.min;hi=s.max;}
+  const span=(hi-lo)||1;
+  const below=p.filter(v=>v<lo).length, above=p.filter(v=>v>hi).length;
+  const core=p.filter(v=>v>=lo&&v<=hi);
+  const bins=Math.min(24,Math.max(8,Math.round(Math.sqrt(core.length)))), counts=new Array(bins).fill(0);
+  core.forEach(v=>{let i=Math.min(bins-1,Math.floor((v-lo)/span*bins));counts[i]++;});
+  const mx=Math.max(...counts,1), bw=(W-pad*2)/bins;
+  let g="";
+  counts.forEach((c,i)=>{const h=(c/mx)*(H-pad*2);
+    g+=`<rect class="bar" x="${pad+i*bw+1}" y="${H-pad-h}" width="${bw-2}" height="${h}"><title>${c} bids</title></rect>`;});
+  window._histGeom={pad,W,H,lo,hi,span};
+  g+=`<g id="marker"></g>`;
+  [0,.25,.5,.75,1].forEach(f=>{const x=pad+f*(W-pad*2);
+    g+=`<text class="axis" x="${x}" y="${H-6}" text-anchor="${f==0?'start':f==1?'end':'middle'}">${money(lo+f*span).replace('.00','')}</text>`;});
+  svg.innerHTML=g;
+  const outl=(below+above)? ` · ${(below+above).toLocaleString()} outliers beyond chart`:"";
+  $("#hist-cap").textContent=`${p.length.toLocaleString()} historical bids · core range $${lo.toFixed(2)}–$${hi.toFixed(2)} per ${s.unit||"unit"}${outl}`;
+  drawMarker();
+}
+
+function drawMarker(){
+  const m=document.getElementById("marker"); if(!m||!window._histGeom)return;
+  const v=parseFloat($("#yourprice").value);
+  if(isNaN(v)){m.innerHTML="";return;}
+  const {pad,W,H,lo,span}=window._histGeom;
+  let x=pad+Math.max(0,Math.min(1,(v-lo)/span))*(W-pad*2);
+  m.innerHTML=`<line class="yourline" x1="${x}" y1="${10}" x2="${x}" y2="${H-pad}"></line>
+    <text class="axis" x="${x}" y="${8}" text-anchor="middle" style="fill:#13202e;font-weight:700">YOU ${money(v).replace('.00','')}</text>`;
+}
+
+function renderTrend(tr,unit){
+  const svg=$("#trend"); if(!tr.length){svg.innerHTML="";return;}
+  const W=560,H=150,pad=30;
+  const vals=tr.map(d=>d.median), lo=Math.min(...vals),hi=Math.max(...vals),span=(hi-lo)||1;
+  const x=i=>pad+ (tr.length<2?0.5:i/(tr.length-1))*(W-pad*2);
+  const y=v=>H-pad-((v-lo)/span)*(H-pad*2-10);
+  let pts=tr.map((d,i)=>`${x(i)},${y(d.median)}`).join(" ");
+  let g=`<polyline fill="none" stroke="#149947" stroke-width="2.5" points="${pts}"/>`;
+  tr.forEach((d,i)=>{g+=`<circle cx="${x(i)}" cy="${y(d.median)}" r="3.5" fill="#1f1f1f"><title>${d.year}: ${money(d.median)} (${d.n})</title></circle>
+     <text class="axis" x="${x(i)}" y="${H-8}" text-anchor="middle">${d.year}</text>`;});
+  g+=`<text class="axis" x="4" y="${y(hi)+3}">${money(hi).replace('.00','')}</text>
+      <text class="axis" x="4" y="${y(lo)+3}">${money(lo).replace('.00','')}</text>`;
+  svg.innerHTML=g;
+}
+
+// ---- benchmarking ----
+$("#yourprice").addEventListener("input",benchmark); $("#yourqty").addEventListener("input",benchmark);
+function benchmark(){
+  drawMarker();
+  const v=parseFloat($("#yourprice").value), s=STATS;
+  const card=$("#verdict");
+  if(!s||!s.count||isNaN(v)){card.className="verdict idle";$("#v-pct").textContent="—";
+    $("#v-lbl").textContent="Enter a unit price to benchmark it";$("#extension").textContent="";return;}
+  const below=s.prices.filter(x=>x<v).length, pct=Math.round(100*below/s.prices.length);
+  $("#v-pct").textContent=pct+"th %ile";
+  let cls,msg;
+  if(pct<=30){cls="low";msg="Competitive / low — verify you're covering cost.";}
+  else if(pct>=75){cls="high";msg="High vs. history — you may be leaving the award on the table.";}
+  else{cls="mid";msg="Mid-pack relative to historical ODOT bids.";}
+  card.className="verdict "+cls; $("#v-lbl").textContent=msg;
+  const qty=parseFloat($("#yourqty").value);
+  if(!isNaN(qty)){
+    const yourTotal=v*qty, medTotal=s.median*qty, diff=yourTotal-medTotal;
+    $("#extension").innerHTML=`At ${qty.toLocaleString()} ${s.unit||""}: line total <b>${money(yourTotal)}</b> · `+
+      `vs. median <b>${money(medTotal)}</b> (${diff>=0?'+':''}${money(diff)})`;
+  } else $("#extension").textContent="";
+}
+</script>
+</body>
+</html>
