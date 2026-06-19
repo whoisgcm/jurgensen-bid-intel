@@ -6,6 +6,9 @@ venv/
 
 # Local database + raw ODOT downloads (regenerable, can be large)
 data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
 data/raw/*
 !data/raw/.gitkeep
 
