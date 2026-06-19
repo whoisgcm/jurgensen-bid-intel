@@ -1,1 +1,1 @@
-{"item":"424E10001","description":"FINE GRADED POLYMER ASPHALT CONCRETE, TYPE A, AS P","unit":"CY","count":5,"window":["2022-03-17","2022-03-17"],"trend":[{"year":"2022","median":230.0,"n":5}],"obs":[[1665.0,230.0],[1665.0,245.0],[1665.0,215.0],[1665.0,230.0],[1665.0,245.0]]}
+{"item":"424E10001","description":"FINE GRADED POLYMER ASPHALT CONCRETE, TYPE A, AS P","unit":"CY","count":5,"window":["2022-03-17","2022-03-17"],"trend":[{"year":"2022","median":230.0,"n":5}],"obs":[[1665.0,230.0,1],[1665.0,245.0,0],[1665.0,215.0,0],[1665.0,230.0,0],[1665.0,245.0,0]]}

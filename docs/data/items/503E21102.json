@@ -1,1 +1,1 @@
-{"item":"503E21102","description":"UNCLASSIFIED EXCAVATION, INCLUDING SHALE","unit":"CY","count":5,"window":["2025-01-16","2025-04-24"],"trend":[{"year":"2025","median":127.63,"n":5}],"obs":[[28.0,122.0],[28.0,127.63],[28.0,180.0],[28.0,55.0],[787.0,300.0]]}
+{"item":"503E21102","description":"UNCLASSIFIED EXCAVATION, INCLUDING SHALE","unit":"CY","count":5,"window":["2025-01-16","2025-04-24"],"trend":[{"year":"2025","median":127.63,"n":5}],"obs":[[28.0,122.0,1],[28.0,127.63,0],[28.0,180.0,0],[28.0,55.0,0],[787.0,300.0,1]]}

@@ -1,1 +1,1 @@
-{"item":"205E10050","description":"LIME STABILIZED EMBANKMENT","unit":"CY","count":5,"window":["2022-03-17","2022-08-25"],"trend":[{"year":"2022","median":50.0,"n":5}],"obs":[[345.0,60.0],[345.0,50.0],[345.0,45.0],[120.0,50.0],[120.0,100.0]]}
+{"item":"205E10050","description":"LIME STABILIZED EMBANKMENT","unit":"CY","count":5,"window":["2022-03-17","2022-08-25"],"trend":[{"year":"2022","median":50.0,"n":5}],"obs":[[345.0,60.0,1],[345.0,50.0,0],[345.0,45.0,0],[120.0,50.0,1],[120.0,100.0,0]]}

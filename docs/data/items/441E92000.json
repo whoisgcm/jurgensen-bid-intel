@@ -1,1 +1,1 @@
-{"item":"441E92000","description":"ASPHALT CONCRETE, MISC.: SPEED BUMP","unit":"LS","count":5,"window":["2024-05-23","2024-05-23"],"trend":[{"year":"2024","median":6800.0,"n":5}],"obs":[[1.0,5875.0],[1.0,4500.0],[1.0,7000.0],[1.0,6800.0],[1.0,9000.0]]}
+{"item":"441E92000","description":"ASPHALT CONCRETE, MISC.: SPEED BUMP","unit":"LS","count":5,"window":["2024-05-23","2024-05-23"],"trend":[{"year":"2024","median":6800.0,"n":5}],"obs":[[1.0,5875.0,1],[1.0,4500.0,0],[1.0,7000.0,0],[1.0,6800.0,0],[1.0,9000.0,0]]}

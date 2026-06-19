@@ -1,1 +1,1 @@
-{"item":"601E34301","description":"ROCK CHANNEL PROTECTION, TYPE D WITHOUT FILTER, AS","unit":"CY","count":6,"window":["2022-04-14","2022-06-30"],"trend":[{"year":"2022","median":130.0,"n":6}],"obs":[[90.0,65.0],[90.0,90.0],[90.0,89.25],[275.0,170.0],[275.0,178.0],[275.0,178.0]]}
+{"item":"601E34301","description":"ROCK CHANNEL PROTECTION, TYPE D WITHOUT FILTER, AS","unit":"CY","count":6,"window":["2022-04-14","2022-06-30"],"trend":[{"year":"2022","median":130.0,"n":6}],"obs":[[90.0,65.0,1],[90.0,90.0,0],[90.0,89.25,0],[275.0,170.0,1],[275.0,178.0,0],[275.0,178.0,0]]}

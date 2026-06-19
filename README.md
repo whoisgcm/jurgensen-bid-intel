@@ -108,15 +108,18 @@ retain the whole spread, not just the awarded price. See [`schema.sql`](schema.s
 
 - [x] Parse ODOT annual Bid Tabs PDFs into the DB (per-bidder grain) via `src/parse_bidtabs.py`.
 - [x] Web app with item search, distribution histogram, percentile benchmarking, year trend.
-- [ ] Backfill more years (2001–2022 PDFs already located) for deeper history.
+- [x] Quantity-band filter (Small/Typical/Large from each item's quantity quartiles;
+      auto-matches the user's takeoff) so prices compare at similar scale.
+- [x] Per-item **likely winning unit price** (median of contract winners' prices in band)
+      with a **confidence level** keyed to the number of winning records.
+- [ ] Backfill more years (2001–2021 PDFs already located) for deeper history.
 - [ ] Capture **district/county** (derivable from the route prefix, e.g. `DEL-SR 521`)
       to enable regional filtering.
-- [ ] Quantity-band filter in the UI (API already supports `min_qty`/`max_qty`) so
-      prices compare at similar scale.
+- [ ] Tighter "near my quantity" matching (±X%) for the winning-price target.
 - [ ] Inflation / asphalt-index normalization so old prices compare fairly to today.
 - [ ] Phase 2: takeoff sheet → full estimate.
 
 ## Status
 
-**Phase 1 working** on real ODOT data (2023–2025). Standalone (not tied to HCSS
-HeavyBid). `python -m src.server` launches the demo UI.
+**Phase 1 working** on real ODOT data (2022–2025). Standalone (not tied to HCSS
+HeavyBid). Live: https://zgiglio.github.io/jurgensen-bid-intel/

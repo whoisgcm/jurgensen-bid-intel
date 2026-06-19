@@ -1,1 +1,1 @@
-{"item":"638E02400","description":"12\" WATER MAIN DUCTILE IRON PIPE ANSI CLASS 52, PU","unit":"FT","count":5,"window":["2024-09-26","2024-09-26"],"trend":[{"year":"2024","median":388.0,"n":5}],"obs":[[328.0,330.0],[328.0,260.0],[328.0,400.0],[328.0,388.0],[328.0,625.0]]}
+{"item":"638E02400","description":"12\" WATER MAIN DUCTILE IRON PIPE ANSI CLASS 52, PU","unit":"FT","count":5,"window":["2024-09-26","2024-09-26"],"trend":[{"year":"2024","median":388.0,"n":5}],"obs":[[328.0,330.0,1],[328.0,260.0,0],[328.0,400.0,0],[328.0,388.0,0],[328.0,625.0,0]]}

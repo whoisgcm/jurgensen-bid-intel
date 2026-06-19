@@ -1,1 +1,1 @@
-{"item":"606E17291","description":"GUARDRAIL, TYPE 5, LONG-SPAN, AS PER PLAN","unit":"FT","count":6,"window":["2022-01-13","2022-01-13"],"trend":[{"year":"2022","median":62.0,"n":6}],"obs":[[1.0,1825.0],[1.0,62.0],[1.0,62.0],[1.0,62.0],[1.0,50.0],[1.0,65.0]]}
+{"item":"606E17291","description":"GUARDRAIL, TYPE 5, LONG-SPAN, AS PER PLAN","unit":"FT","count":6,"window":["2022-01-13","2022-01-13"],"trend":[{"year":"2022","median":62.0,"n":6}],"obs":[[1.0,1825.0,1],[1.0,62.0,0],[1.0,62.0,0],[1.0,62.0,0],[1.0,50.0,0],[1.0,65.0,0]]}

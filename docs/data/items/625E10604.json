@@ -1,1 +1,1 @@
-{"item":"625E10604","description":"LIGHT POLE ANCHOR BOLTS, HEADED","unit":"EACH","count":5,"window":["2025-04-24","2025-04-24"],"trend":[{"year":"2025","median":84.0,"n":5}],"obs":[[4.0,75.0],[4.0,238.25],[4.0,84.0],[4.0,82.0],[4.0,240.63]]}
+{"item":"625E10604","description":"LIGHT POLE ANCHOR BOLTS, HEADED","unit":"EACH","count":5,"window":["2025-04-24","2025-04-24"],"trend":[{"year":"2025","median":84.0,"n":5}],"obs":[[4.0,75.0,1],[4.0,238.25,0],[4.0,84.0,0],[4.0,82.0,0],[4.0,240.63,0]]}

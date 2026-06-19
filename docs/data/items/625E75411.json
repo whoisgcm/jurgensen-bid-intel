@@ -1,1 +1,1 @@
-{"item":"625E75411","description":"LIGHT POLE REMOVED FOR REUSE, AS PER PLAN","unit":"EACH","count":6,"window":["2025-08-28","2025-08-28"],"trend":[{"year":"2025","median":3500.0,"n":6}],"obs":[[2.0,3500.0],[2.0,3500.0],[2.0,1000.0],[2.0,3750.0],[2.0,3241.5],[2.0,3500.0]]}
+{"item":"625E75411","description":"LIGHT POLE REMOVED FOR REUSE, AS PER PLAN","unit":"EACH","count":6,"window":["2025-08-28","2025-08-28"],"trend":[{"year":"2025","median":3500.0,"n":6}],"obs":[[2.0,3500.0,1],[2.0,3500.0,0],[2.0,1000.0,0],[2.0,3750.0,0],[2.0,3241.5,0],[2.0,3500.0,0]]}

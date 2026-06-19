@@ -1,1 +1,1 @@
-{"item":"630E76531","description":"SPAN WIRE SIGN SUPPORT, TYPE TC-17.11, DESIGN 10","unit":"EACH","count":5,"window":["2024-02-22","2024-02-22"],"trend":[{"year":"2024","median":17050.0,"n":5}],"obs":[[1.0,17050.0],[1.0,17050.0],[1.0,19000.0],[1.0,17050.0],[1.0,19000.0]]}
+{"item":"630E76531","description":"SPAN WIRE SIGN SUPPORT, TYPE TC-17.11, DESIGN 10","unit":"EACH","count":5,"window":["2024-02-22","2024-02-22"],"trend":[{"year":"2024","median":17050.0,"n":5}],"obs":[[1.0,17050.0,1],[1.0,17050.0,0],[1.0,19000.0,0],[1.0,17050.0,0],[1.0,19000.0,0]]}

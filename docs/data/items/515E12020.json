@@ -1,1 +1,1 @@
-{"item":"515E12020","description":"PRESTRESSED CONCRETE COMPOSITE BOX BEAM BRIDGE MEM","unit":"EACH","count":5,"window":["2024-10-17","2024-10-17"],"trend":[{"year":"2024","median":8500.0,"n":5}],"obs":[[11.0,8500.0],[11.0,11300.0],[11.0,6361.23],[11.0,8320.0],[11.0,10200.0]]}
+{"item":"515E12020","description":"PRESTRESSED CONCRETE COMPOSITE BOX BEAM BRIDGE MEM","unit":"EACH","count":5,"window":["2024-10-17","2024-10-17"],"trend":[{"year":"2024","median":8500.0,"n":5}],"obs":[[11.0,8500.0,1],[11.0,11300.0,0],[11.0,6361.23,0],[11.0,8320.0,0],[11.0,10200.0,0]]}

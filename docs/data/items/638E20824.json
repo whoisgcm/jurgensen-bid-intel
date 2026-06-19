@@ -1,1 +1,1 @@
-{"item":"638E20824","description":"SPECIAL - INSTALL 1\" COPPER WATER SERVICE CONNECTI","unit":"FT","count":6,"window":["2025-08-28","2025-08-28"],"trend":[{"year":"2025","median":115.0,"n":6}],"obs":[[263.0,152.0],[263.0,80.0],[263.0,130.0],[263.0,170.0],[263.0,99.0],[263.0,100.0]]}
+{"item":"638E20824","description":"SPECIAL - INSTALL 1\" COPPER WATER SERVICE CONNECTI","unit":"FT","count":6,"window":["2025-08-28","2025-08-28"],"trend":[{"year":"2025","median":115.0,"n":6}],"obs":[[263.0,152.0,1],[263.0,80.0,0],[263.0,130.0,0],[263.0,170.0,0],[263.0,99.0,0],[263.0,100.0,0]]}

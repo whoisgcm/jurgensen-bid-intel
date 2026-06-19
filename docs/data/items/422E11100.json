@@ -1,1 +1,1 @@
-{"item":"422E11100","description":"AGGREGATE, SINGLE CHIP SEAL, TYPE B","unit":"SY","count":5,"window":["2022-02-17","2022-02-17"],"trend":[{"year":"2022","median":94.0,"n":5}],"obs":[[102.0,94.0],[102.0,94.0],[102.0,94.0],[102.0,94.0],[102.0,94.0]]}
+{"item":"422E11100","description":"AGGREGATE, SINGLE CHIP SEAL, TYPE B","unit":"SY","count":5,"window":["2022-02-17","2022-02-17"],"trend":[{"year":"2022","median":94.0,"n":5}],"obs":[[102.0,94.0,1],[102.0,94.0,0],[102.0,94.0,0],[102.0,94.0,0],[102.0,94.0,0]]}

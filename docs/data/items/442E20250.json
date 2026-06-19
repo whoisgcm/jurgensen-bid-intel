@@ -1,1 +1,1 @@
-{"item":"442E20250","description":"ASPHALT CONCRETE INTERMEDIATE COURSE, 19 MM, TYPE","unit":"CY","count":5,"window":["2023-06-08","2023-06-08"],"trend":[{"year":"2023","median":300.0,"n":5}],"obs":[[159.0,278.0],[159.0,300.0],[159.0,325.0],[159.0,345.0],[159.0,290.0]]}
+{"item":"442E20250","description":"ASPHALT CONCRETE INTERMEDIATE COURSE, 19 MM, TYPE","unit":"CY","count":5,"window":["2023-06-08","2023-06-08"],"trend":[{"year":"2023","median":300.0,"n":5}],"obs":[[159.0,278.0,1],[159.0,300.0,0],[159.0,325.0,0],[159.0,345.0,0],[159.0,290.0,0]]}

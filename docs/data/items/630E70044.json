@@ -1,1 +1,1 @@
-{"item":"630E70044","description":"OVERHEAD SIGN SUPPORT, DMS PEDESTAL","unit":"EACH","count":5,"window":["2023-05-11","2023-05-11"],"trend":[{"year":"2023","median":44250.0,"n":5}],"obs":[[1.0,42600.0],[1.0,42600.0],[4.0,46000.0],[4.0,44250.0],[4.0,55015.0]]}
+{"item":"630E70044","description":"OVERHEAD SIGN SUPPORT, DMS PEDESTAL","unit":"EACH","count":5,"window":["2023-05-11","2023-05-11"],"trend":[{"year":"2023","median":44250.0,"n":5}],"obs":[[1.0,42600.0,1],[1.0,42600.0,0],[4.0,46000.0,1],[4.0,44250.0,0],[4.0,55015.0,0]]}

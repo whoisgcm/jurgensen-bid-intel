@@ -1,1 +1,1 @@
-{"item":"661E30070","description":"EVERGREEN SHRUB, 2.5' HEIGHT Gold Lace Pfitzer Jun","unit":"EACH","count":6,"window":["2022-03-10","2022-03-10"],"trend":[{"year":"2022","median":84.5,"n":6}],"obs":[[52.0,92.06],[52.0,92.0],[52.0,92.06],[162.0,76.68],[162.0,77.0],[162.0,76.68]]}
+{"item":"661E30070","description":"EVERGREEN SHRUB, 2.5' HEIGHT Gold Lace Pfitzer Jun","unit":"EACH","count":6,"window":["2022-03-10","2022-03-10"],"trend":[{"year":"2022","median":84.5,"n":6}],"obs":[[52.0,92.06,1],[52.0,92.0,0],[52.0,92.06,0],[162.0,76.68,1],[162.0,77.0,0],[162.0,76.68,0]]}

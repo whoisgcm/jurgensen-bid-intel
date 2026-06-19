@@ -1,1 +1,1 @@
-{"item":"503E31121","description":"SHALE EXCAVATION, AS PER PLAN","unit":"CY","count":5,"window":["2024-08-08","2024-08-08"],"trend":[{"year":"2024","median":190.0,"n":5}],"obs":[[78.0,260.0],[78.0,225.0],[78.0,95.0],[78.0,185.0],[78.0,190.0]]}
+{"item":"503E31121","description":"SHALE EXCAVATION, AS PER PLAN","unit":"CY","count":5,"window":["2024-08-08","2024-08-08"],"trend":[{"year":"2024","median":190.0,"n":5}],"obs":[[78.0,260.0,1],[78.0,225.0,0],[78.0,95.0,0],[78.0,185.0,0],[78.0,190.0,0]]}

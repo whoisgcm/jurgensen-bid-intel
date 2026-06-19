@@ -1,1 +1,1 @@
-{"item":"515E10070","description":"PRESTRESSED CONCRETE NON-COMPOSITE BOX BEAM BRIDGE","unit":"EACH","count":5,"window":["2023-08-24","2023-08-24"],"trend":[{"year":"2023","median":28000.0,"n":5}],"obs":[[6.0,24200.0],[6.0,30000.0],[6.0,32000.0],[6.0,28000.0],[6.0,26000.0]]}
+{"item":"515E10070","description":"PRESTRESSED CONCRETE NON-COMPOSITE BOX BEAM BRIDGE","unit":"EACH","count":5,"window":["2023-08-24","2023-08-24"],"trend":[{"year":"2023","median":28000.0,"n":5}],"obs":[[6.0,24200.0,1],[6.0,30000.0,0],[6.0,32000.0,0],[6.0,28000.0,0],[6.0,26000.0,0]]}

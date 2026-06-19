@@ -42,12 +42,13 @@ def main():
     for r in items:
         code = r["item_code"]
         rows = conn.execute(
-            "SELECT quantity, unit_price FROM bid_lines WHERE item_code = ? AND unit_price IS NOT NULL",
+            "SELECT quantity, unit_price, is_awarded FROM bid_lines WHERE item_code = ? AND unit_price IS NOT NULL",
             (code,),
         ).fetchall()
-        # [quantity, unit_price] pairs; quantity may be null (kept, but unbandable)
+        # [quantity, unit_price, is_awarded] triples. quantity may be null (kept,
+        # but unbandable); is_awarded=1 marks the contract winner's price.
         obs = [[round(o["quantity"], 2) if o["quantity"] is not None else None,
-                round(o["unit_price"], 2)] for o in rows]
+                round(o["unit_price"], 2), o["is_awarded"] or 0] for o in rows]
         rng = conn.execute(
             """SELECT MIN(p.sale_date), MAX(p.sale_date)
                FROM bid_lines b JOIN projects p ON p.project_id = b.project_id

@@ -1,1 +1,1 @@
-{"item":"452E11020","description":"7\" NON-REINFORCED CONCRETE PAVEMENT, CLASS QC 1P W","unit":"SY","count":5,"window":["2025-12-18","2025-12-18"],"trend":[{"year":"2025","median":114.39,"n":5}],"obs":[[358.0,114.39],[358.0,103.0],[358.0,131.89],[358.0,105.0],[358.0,175.0]]}
+{"item":"452E11020","description":"7\" NON-REINFORCED CONCRETE PAVEMENT, CLASS QC 1P W","unit":"SY","count":5,"window":["2025-12-18","2025-12-18"],"trend":[{"year":"2025","median":114.39,"n":5}],"obs":[[358.0,114.39,1],[358.0,103.0,0],[358.0,131.89,0],[358.0,105.0,0],[358.0,175.0,0]]}

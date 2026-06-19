@@ -1,1 +1,1 @@
-{"item":"866E00300","description":"INVESTIGATIVE ANCHOR PULLOUT TESTS","unit":"LS","count":5,"window":["2025-05-15","2025-11-14"],"trend":[{"year":"2025","median":22500.0,"n":5}],"obs":[[1.0,20000.0],[1.0,45000.0],[1.0,22500.0],[1.0,15000.0],[1.0,22500.0]]}
+{"item":"866E00300","description":"INVESTIGATIVE ANCHOR PULLOUT TESTS","unit":"LS","count":5,"window":["2025-05-15","2025-11-14"],"trend":[{"year":"2025","median":22500.0,"n":5}],"obs":[[1.0,20000.0,1],[1.0,45000.0,0],[1.0,22500.0,1],[1.0,15000.0,0],[1.0,22500.0,0]]}

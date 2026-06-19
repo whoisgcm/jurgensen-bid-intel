@@ -1,1 +1,1 @@
-{"item":"638E20064","description":"SPECIAL - 6\" WATER MAIN DIP CLASS 55 MECHANICAL JO","unit":"FT","count":5,"window":["2022-07-28","2022-07-28"],"trend":[{"year":"2022","median":420.76,"n":5}],"obs":[[18.0,487.65],[18.0,250.0],[18.0,294.5],[18.0,420.76],[18.0,620.0]]}
+{"item":"638E20064","description":"SPECIAL - 6\" WATER MAIN DIP CLASS 55 MECHANICAL JO","unit":"FT","count":5,"window":["2022-07-28","2022-07-28"],"trend":[{"year":"2022","median":420.76,"n":5}],"obs":[[18.0,487.65,1],[18.0,250.0,0],[18.0,294.5,0],[18.0,420.76,0],[18.0,620.0,0]]}

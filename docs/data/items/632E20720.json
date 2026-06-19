@@ -1,1 +1,1 @@
-{"item":"632E20720","description":"PEDESTRIAN SIGNAL HEAD (LED), TYPE D2","unit":"EACH","count":5,"window":["2022-09-15","2022-09-15"],"trend":[{"year":"2022","median":600.0,"n":5}],"obs":[[8.0,650.0],[8.0,567.0],[8.0,715.0],[8.0,450.0],[8.0,600.0]]}
+{"item":"632E20720","description":"PEDESTRIAN SIGNAL HEAD (LED), TYPE D2","unit":"EACH","count":5,"window":["2022-09-15","2022-09-15"],"trend":[{"year":"2022","median":600.0,"n":5}],"obs":[[8.0,650.0,1],[8.0,567.0,0],[8.0,715.0,0],[8.0,450.0,0],[8.0,600.0,0]]}

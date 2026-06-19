@@ -1,1 +1,1 @@
-{"item":"515E12110","description":"PRESTRESSED CONCRETE COMPOSITE BOX BEAM BRIDGE MEM","unit":"EACH","count":5,"window":["2022-02-17","2022-02-17"],"trend":[{"year":"2022","median":30700.0,"n":5}],"obs":[[9.0,29500.0],[9.0,30500.0],[9.0,30700.0],[9.0,40075.0],[9.0,33000.0]]}
+{"item":"515E12110","description":"PRESTRESSED CONCRETE COMPOSITE BOX BEAM BRIDGE MEM","unit":"EACH","count":5,"window":["2022-02-17","2022-02-17"],"trend":[{"year":"2022","median":30700.0,"n":5}],"obs":[[9.0,29500.0,1],[9.0,30500.0,0],[9.0,30700.0,0],[9.0,40075.0,0],[9.0,33000.0,0]]}

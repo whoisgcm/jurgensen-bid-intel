@@ -1,1 +1,1 @@
-{"item":"614E30001","description":"WORK ZONE ARROW, CLASS I, AS PER PLAN","unit":"EACH","count":6,"window":["2025-05-01","2025-05-01"],"trend":[{"year":"2025","median":200.0,"n":6}],"obs":[[2.0,200.0],[2.0,100.0],[2.0,100.0],[2.0,250.0],[2.0,200.0],[2.0,200.0]]}
+{"item":"614E30001","description":"WORK ZONE ARROW, CLASS I, AS PER PLAN","unit":"EACH","count":6,"window":["2025-05-01","2025-05-01"],"trend":[{"year":"2025","median":200.0,"n":6}],"obs":[[2.0,200.0,1],[2.0,100.0,0],[2.0,100.0,0],[2.0,250.0,0],[2.0,200.0,0],[2.0,200.0,0]]}

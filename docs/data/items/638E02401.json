@@ -1,1 +1,1 @@
-{"item":"638E02401","description":"12\" WATERMAIN DUCTILE IRON PIPE ANSI CLASS 52, PUS","unit":"FT","count":5,"window":["2022-03-10","2022-12-01"],"trend":[{"year":"2022","median":355.0,"n":5}],"obs":[[769.0,355.0],[769.0,170.0],[769.0,250.0],[24.0,740.0],[24.0,520.0]]}
+{"item":"638E02401","description":"12\" WATERMAIN DUCTILE IRON PIPE ANSI CLASS 52, PUS","unit":"FT","count":5,"window":["2022-03-10","2022-12-01"],"trend":[{"year":"2022","median":355.0,"n":5}],"obs":[[769.0,355.0,1],[769.0,170.0,0],[769.0,250.0,0],[24.0,740.0,1],[24.0,520.0,0]]}

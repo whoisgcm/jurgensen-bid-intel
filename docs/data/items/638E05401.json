@@ -1,1 +1,1 @@
-{"item":"638E05401","description":"1\" POLYETHYLENE SERVICE BRANCH, AS PER PLAN","unit":"FT","count":6,"window":["2023-05-11","2023-12-14"],"trend":[{"year":"2023","median":99.0,"n":6}],"obs":[[10.0,110.0],[10.0,30.0],[10.0,244.0],[2219.0,88.0],[2219.0,112.0],[2219.0,78.0]]}
+{"item":"638E05401","description":"1\" POLYETHYLENE SERVICE BRANCH, AS PER PLAN","unit":"FT","count":6,"window":["2023-05-11","2023-12-14"],"trend":[{"year":"2023","median":99.0,"n":6}],"obs":[[10.0,110.0,1],[10.0,30.0,0],[10.0,244.0,0],[2219.0,88.0,1],[2219.0,112.0,0],[2219.0,78.0,0]]}

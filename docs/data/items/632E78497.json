@@ -1,1 +1,1 @@
-{"item":"632E78497","description":"COMBINATION SIGNAL SUPPORT, TYPE TC-12.31 DESIGN 1","unit":"EACH","count":5,"window":["2025-02-27","2025-02-27"],"trend":[{"year":"2025","median":39000.0,"n":5}],"obs":[[1.0,39000.0],[1.0,39000.0],[1.0,39000.0],[1.0,46000.0],[1.0,51856.0]]}
+{"item":"632E78497","description":"COMBINATION SIGNAL SUPPORT, TYPE TC-12.31 DESIGN 1","unit":"EACH","count":5,"window":["2025-02-27","2025-02-27"],"trend":[{"year":"2025","median":39000.0,"n":5}],"obs":[[1.0,39000.0,1],[1.0,39000.0,0],[1.0,39000.0,0],[1.0,46000.0,0],[1.0,51856.0,0]]}

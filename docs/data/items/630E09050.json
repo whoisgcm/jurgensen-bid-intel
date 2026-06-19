@@ -1,1 +1,1 @@
-{"item":"630E09050","description":"TRIANGULAR SLIP BASE CONNECTION","unit":"EACH","count":5,"window":["2022-01-27","2025-02-27"],"trend":[{"year":"2022","median":450.0,"n":2},{"year":"2025","median":250.0,"n":3}],"obs":[[1.0,250.0],[1.0,550.0],[1.0,100.0],[1.0,650.0],[1.0,250.0]]}
+{"item":"630E09050","description":"TRIANGULAR SLIP BASE CONNECTION","unit":"EACH","count":5,"window":["2022-01-27","2025-02-27"],"trend":[{"year":"2022","median":450.0,"n":2},{"year":"2025","median":250.0,"n":3}],"obs":[[1.0,250.0,1],[1.0,550.0,0],[1.0,100.0,1],[1.0,650.0,1],[1.0,250.0,0]]}

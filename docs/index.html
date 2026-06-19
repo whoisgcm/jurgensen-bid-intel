@@ -68,6 +68,19 @@
   .bandbar select{padding:8px 11px;font-size:13.5px;border:1px solid var(--line);border-radius:8px;background:#fff;font-family:inherit;cursor:pointer}
   .bandbar select:focus{outline:none;border-color:var(--green)}
   .bandnote{color:var(--green);font-weight:600}
+  .winbox{display:none;align-items:center;gap:18px;flex-wrap:wrap;background:#f1f8f3;border:1px solid #cfe7d6;
+          border-left:4px solid var(--green);border-radius:10px;padding:14px 18px;margin-top:14px}
+  .winbox-mid{flex:1;min-width:170px}
+  .winbox-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--green);font-weight:700}
+  .winbox-val{font-family:"Rubik",sans-serif;font-weight:700;font-size:28px;color:var(--ink);line-height:1.1;margin-top:3px}
+  .winbox-range{font-size:12.5px;color:var(--slate);margin-top:3px}
+  .winbox-you{font-size:12.5px;margin-top:6px}
+  .conf{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700}
+  .conf-dot{width:11px;height:11px;border-radius:50%;background:#b0b6bc}
+  .conf.high .conf-dot{background:var(--green)} .conf.med .conf-dot{background:var(--yellow)}
+  .conf.low .conf-dot{background:#e8833a} .conf.none .conf-dot{background:#b0b6bc}
+  .conf-basis{font-size:11.5px;color:var(--slate);margin-top:4px;max-width:200px}
+  .winbox-note{flex-basis:100%;font-size:11.5px;color:var(--slate);border-top:1px dashed #cfe7d6;padding-top:9px;margin-top:2px}
   .grid{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-top:18px}
   @media(max-width:760px){.grid{grid-template-columns:1fr}}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
@@ -136,6 +149,20 @@
       <label for="band" style="margin:0;color:var(--slate)">Compare against job size:</label>
       <select id="band"></select>
       <span class="bandnote" id="bandnote"></span>
+    </div>
+
+    <div class="winbox" id="winbox">
+      <div class="winbox-mid">
+        <div class="winbox-label">Likely winning unit price · per item</div>
+        <div class="winbox-val" id="win-val">-</div>
+        <div class="winbox-range" id="win-range"></div>
+        <div class="winbox-you" id="win-you"></div>
+      </div>
+      <div>
+        <div class="conf none" id="conf"><span class="conf-dot"></span><span id="conf-label">-</span></div>
+        <div class="conf-basis" id="conf-basis"></div>
+      </div>
+      <div class="winbox-note">Reflects what winning bidders actually charged for this single pay item at this job size. A competitive target for this line, not a full-contract bid prediction.</div>
     </div>
 
     <div class="grid">
@@ -230,7 +257,7 @@ $("#q").addEventListener("input", e=>{
   },140);
 });
 
-let BANDS=[], VIEW=null, bandLocked=false;
+let BANDS=[], VIEW=null, WINVIEW=null, bandLocked=false;
 
 async function select(code){
   $("#results").style.display="none"; $("#q").value="";
@@ -292,14 +319,48 @@ function computeView(it,obs){
 
 function applyBand(){
   const key=$("#band").value;
-  VIEW=computeView(STATS, filterObs(STATS,key));
+  const obs=filterObs(STATS,key);
+  VIEW=computeView(STATS, obs);
   $("#p-meta").innerHTML = VIEW.count
      ? `${VIEW.count.toLocaleString()} bid observations<br>${VIEW.window?VIEW.window[0]+" → "+VIEW.window[1]:""}`
      : "no data";
   $("#bandnote").textContent = key==="all" ? "" : `benchmarking against ${VIEW.count.toLocaleString()} similar-size bids`;
-  renderStats(VIEW); renderHist(VIEW); benchmark();
+  renderStats(VIEW); renderHist(VIEW); renderWin(obs); benchmark();
 }
 $("#band").addEventListener("change", ()=>{ bandLocked=true; applyBand(); });
+
+// "Likely winning unit price": distribution of the contract winners' prices
+// (obs[2]===1) in the current job-size band, with a confidence level keyed to
+// how many winning records back it.
+function renderWin(obs){
+  const wins=obs.filter(o=>o[2]===1).map(o=>o[1]).filter(v=>v!=null).sort((a,b)=>a-b);
+  const n=wins.length;
+  WINVIEW={n, median:pctile(wins,50), p25:pctile(wins,25), p75:pctile(wins,75)};
+  $("#winbox").style.display="flex";
+  const u=STATS.unit||"";
+  if(n<5){
+    $("#win-val").textContent="Not enough data";
+    $("#win-range").textContent=""; $("#win-you").textContent="";
+    setConf("none","Insufficient data", `only ${n} winning bid${n===1?"":"s"} at this job size. Try “All job sizes”.`);
+    return;
+  }
+  $("#win-val").innerHTML=`${money(WINVIEW.median).replace(".00","")} <span style="font-size:14px;color:var(--slate);font-weight:600">/ ${u}</span>`;
+  $("#win-range").textContent=`most winners ${money(WINVIEW.p25).replace(".00","")}–${money(WINVIEW.p75).replace(".00","")}`;
+  let cls,label;
+  if(n>=30){cls="high";label="High confidence";}
+  else if(n>=12){cls="med";label="Moderate confidence";}
+  else{cls="low";label="Low confidence";}
+  setConf(cls,label,`based on ${n.toLocaleString()} winning bids for jobs this size`);
+  updateWinYou();
+}
+function setConf(cls,label,basis){ $("#conf").className="conf "+cls; $("#conf-label").textContent=label; $("#conf-basis").textContent=basis; }
+function updateWinYou(){
+  const v=parseFloat($("#yourprice").value);
+  if(!WINVIEW||WINVIEW.n<5||isNaN(v)){ $("#win-you").textContent=""; return; }
+  const d=v-WINVIEW.median;
+  if(Math.abs(d)<0.005){ $("#win-you").innerHTML=`Your price sits right at the winning median.`; return; }
+  $("#win-you").innerHTML=`Your ${money(v).replace(".00","")} is <b style="color:${d>0?"var(--red)":"var(--green)"}">${money(Math.abs(d)).replace(".00","")} ${d>0?"above":"below"}</b> the winning median.`;
+}
 
 // When a takeoff quantity is entered, auto-jump to the band it falls in (unless
 // the user has manually picked a band).
@@ -373,7 +434,7 @@ function renderTrend(tr,unit){
 $("#yourprice").addEventListener("input",benchmark);
 $("#yourqty").addEventListener("input",()=>{ maybeAutoBand(); benchmark(); });
 function benchmark(){
-  drawMarker();
+  drawMarker(); updateWinYou();
   const v=parseFloat($("#yourprice").value), s=VIEW;
   const card=$("#verdict");
   if(!s||!s.count||isNaN(v)){card.className="verdict idle";$("#v-pct").textContent="-";

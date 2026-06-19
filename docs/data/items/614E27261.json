@@ -1,1 +1,1 @@
-{"item":"614E27261","description":"WORK ZONE CROSSWALK LINE, CLASS III, 24\", 642 PAIN","unit":"FT","count":5,"window":["2022-07-14","2022-12-01"],"trend":[{"year":"2022","median":4.0,"n":5}],"obs":[[560.0,4.0],[560.0,2.0],[252.0,3.0],[252.0,10.0],[252.0,10.0]]}
+{"item":"614E27261","description":"WORK ZONE CROSSWALK LINE, CLASS III, 24\", 642 PAIN","unit":"FT","count":5,"window":["2022-07-14","2022-12-01"],"trend":[{"year":"2022","median":4.0,"n":5}],"obs":[[560.0,4.0,1],[560.0,2.0,0],[252.0,3.0,1],[252.0,10.0,0],[252.0,10.0,0]]}

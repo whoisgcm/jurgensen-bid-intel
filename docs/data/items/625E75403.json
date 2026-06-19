@@ -1,1 +1,1 @@
-{"item":"625E75403","description":"LIGHT POLE REMOVED FOR STORAGE, AS PER PLAN","unit":"EACH","count":6,"window":["2025-04-24","2025-12-18"],"trend":[{"year":"2025","median":442.5,"n":6}],"obs":[[9.0,484.0],[2.0,1250.0],[2.0,401.0],[2.0,1280.04],[2.0,375.0],[2.0,400.0]]}
+{"item":"625E75403","description":"LIGHT POLE REMOVED FOR STORAGE, AS PER PLAN","unit":"EACH","count":6,"window":["2025-04-24","2025-12-18"],"trend":[{"year":"2025","median":442.5,"n":6}],"obs":[[9.0,484.0,1],[2.0,1250.0,1],[2.0,401.0,0],[2.0,1280.04,0],[2.0,375.0,0],[2.0,400.0,0]]}

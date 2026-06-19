@@ -1,1 +1,1 @@
-{"item":"630E73320","description":"COMBINATION OVERHEAD SIGN SUPPORT, TYPE TC-12.31","unit":"EACH","count":5,"window":["2024-06-27","2024-06-27"],"trend":[{"year":"2024","median":27427.0,"n":5}],"obs":[[1.0,27000.0],[1.0,27427.0],[1.0,31000.0],[1.0,21790.0],[1.0,28579.84]]}
+{"item":"630E73320","description":"COMBINATION OVERHEAD SIGN SUPPORT, TYPE TC-12.31","unit":"EACH","count":5,"window":["2024-06-27","2024-06-27"],"trend":[{"year":"2024","median":27427.0,"n":5}],"obs":[[1.0,27000.0,1],[1.0,27427.0,0],[1.0,31000.0,0],[1.0,21790.0,0],[1.0,28579.84,0]]}

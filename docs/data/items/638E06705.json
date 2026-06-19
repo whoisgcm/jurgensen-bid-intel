@@ -1,1 +1,1 @@
-{"item":"638E06705","description":"20\" STEEL PIPE ENCASEMENT, OPEN CUT, AS PER PLAN*","unit":"FT","count":5,"window":["2022-03-10","2022-11-17"],"trend":[{"year":"2022","median":372.0,"n":5}],"obs":[[60.0,425.0],[60.0,219.0],[60.0,295.0],[40.0,545.0],[40.0,372.0]]}
+{"item":"638E06705","description":"20\" STEEL PIPE ENCASEMENT, OPEN CUT, AS PER PLAN*","unit":"FT","count":5,"window":["2022-03-10","2022-11-17"],"trend":[{"year":"2022","median":372.0,"n":5}],"obs":[[60.0,425.0,1],[60.0,219.0,0],[60.0,295.0,0],[40.0,545.0,1],[40.0,372.0,0]]}

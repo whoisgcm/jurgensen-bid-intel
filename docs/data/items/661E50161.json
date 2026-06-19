@@ -1,1 +1,1 @@
-{"item":"661E50161","description":"EVERGREEN TREE, 8' HEIGHT, AS PER PLANONIFEROUS TR","unit":"EACH","count":5,"window":["2025-05-15","2025-05-15"],"trend":[{"year":"2025","median":520.0,"n":5}],"obs":[[74.0,520.0],[74.0,520.0],[74.0,1000.0],[74.0,520.0],[74.0,572.0]]}
+{"item":"661E50161","description":"EVERGREEN TREE, 8' HEIGHT, AS PER PLANONIFEROUS TR","unit":"EACH","count":5,"window":["2025-05-15","2025-05-15"],"trend":[{"year":"2025","median":520.0,"n":5}],"obs":[[74.0,520.0,1],[74.0,520.0,0],[74.0,1000.0,0],[74.0,520.0,0],[74.0,572.0,0]]}

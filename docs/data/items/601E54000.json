@@ -1,1 +1,1 @@
-{"item":"601E54000","description":"CHANNEL PROTECTION, MISC.: FILL VOIDS AT PIERS","unit":"LS","count":5,"window":["2024-08-08","2024-08-08"],"trend":[{"year":"2024","median":8000.0,"n":5}],"obs":[[1.0,5200.0],[1.0,35000.0],[1.0,8000.0],[1.0,12500.0],[1.0,5250.0]]}
+{"item":"601E54000","description":"CHANNEL PROTECTION, MISC.: FILL VOIDS AT PIERS","unit":"LS","count":5,"window":["2024-08-08","2024-08-08"],"trend":[{"year":"2024","median":8000.0,"n":5}],"obs":[[1.0,5200.0,1],[1.0,35000.0,0],[1.0,8000.0,0],[1.0,12500.0,0],[1.0,5250.0,0]]}

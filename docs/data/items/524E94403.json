@@ -1,1 +1,1 @@
-{"item":"524E94403","description":"DRILLED SHAFTS, 18\" DIAMETER, ABOVE BEDROCK, AS PE","unit":"FT","count":6,"window":["2022-06-16","2022-06-16"],"trend":[{"year":"2022","median":92.5,"n":6}],"obs":[[102.0,165.0],[102.0,90.0],[102.0,35.0],[174.0,155.0],[174.0,95.0],[174.0,35.0]]}
+{"item":"524E94403","description":"DRILLED SHAFTS, 18\" DIAMETER, ABOVE BEDROCK, AS PE","unit":"FT","count":6,"window":["2022-06-16","2022-06-16"],"trend":[{"year":"2022","median":92.5,"n":6}],"obs":[[102.0,165.0,1],[102.0,90.0,0],[102.0,35.0,0],[174.0,155.0,1],[174.0,95.0,0],[174.0,35.0,0]]}

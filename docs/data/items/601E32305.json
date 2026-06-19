@@ -1,1 +1,1 @@
-{"item":"601E32305","description":"ROCK CHANNEL PROTECTION, TYPE D WITH GEOTEXTILE FA","unit":"CY","count":5,"window":["2022-03-10","2022-03-31"],"trend":[{"year":"2022","median":85.0,"n":5}],"obs":[[336.0,64.0],[336.0,85.0],[217.0,138.4],[217.0,73.53],[217.0,130.0]]}
+{"item":"601E32305","description":"ROCK CHANNEL PROTECTION, TYPE D WITH GEOTEXTILE FA","unit":"CY","count":5,"window":["2022-03-10","2022-03-31"],"trend":[{"year":"2022","median":85.0,"n":5}],"obs":[[336.0,64.0,1],[336.0,85.0,0],[217.0,138.4,1],[217.0,73.53,0],[217.0,130.0,0]]}

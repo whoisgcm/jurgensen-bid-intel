@@ -1,1 +1,1 @@
-{"item":"202E53101","description":"MAILBOX REMOVED, AS PER PLAN","unit":"EACH","count":5,"window":["2023-04-13","2025-12-04"],"trend":[{"year":"2023","median":345.0,"n":3},{"year":"2025","median":100.0,"n":2}],"obs":[[1.0,50.0],[1.0,150.0],[1.0,300.0],[1.0,345.0],[1.0,1161.8]]}
+{"item":"202E53101","description":"MAILBOX REMOVED, AS PER PLAN","unit":"EACH","count":5,"window":["2023-04-13","2025-12-04"],"trend":[{"year":"2023","median":345.0,"n":3},{"year":"2025","median":100.0,"n":2}],"obs":[[1.0,50.0,1],[1.0,150.0,0],[1.0,300.0,1],[1.0,345.0,0],[1.0,1161.8,0]]}
