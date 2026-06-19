@@ -6,19 +6,19 @@ the market has actually bid** for the same pay item, quantity, district, and era
 
 Built for The Jurgensen Company (heavy-highway / asphalt, ODOT District 8 region).
 
-**▶ Live app: https://zgiglio.github.io/jurgensen-bid-intel/**  (no install — just open it)
+**▶ Live app: https://zgiglio.github.io/jurgensen-bid-intel/**  (no install, just open it)
 
 ---
 
 ## Why this works
 
-ODOT publishes bid data on a standardized **pay-item** system — every line of work
+ODOT publishes bid data on a standardized **pay-item** system. Every line of work
 has a code, description, and unit (e.g. `441E10100 – Asphalt Concrete Surface Course,
 CY`). For each let project, ODOT posts **bid tabulations** showing *every bidder's
 unit price for every item*, plus aggregated **average/weighted item prices** in
 Excel/PDF (and an interactive Power BI tool).
 
-That gives us the full price *spread* — not just the winner — across hundreds of
+That gives us the full price *spread* (not just the winner) across hundreds of
 projects and years. The hard ingredient (clean, structured historical pricing) is
 already published; this tool just makes it queryable and benchmarkable.
 
@@ -36,7 +36,7 @@ Data sources:
   max + quantity-weighted average for any item, filtered by date, district, and
   quantity band. Independently useful to estimators on day one.
 - **Phase 2:** takeoff input → cost estimate built from unit prices.
-- **Phase 3:** the benchmarking overlay — your estimate vs. the historical
+- **Phase 3:** the benchmarking overlay: your estimate vs. the historical
   distribution, with low/competitive/high flags. (Already prototyped via
   `price --estimate`.)
 
@@ -70,7 +70,7 @@ Current build: **2023–2025 = 1,824 projects, 424,461 bid prices, 3,312 benchma
 Search a pay item → see its full historical unit-price distribution (min/p25/median/
 p75/max + quantity-weighted average), a histogram with **your number marked**, a
 percentile verdict (competitive / mid / high), a line-total vs. median comparison,
-and a median-by-year trend. Zero web dependencies — pure standard library.
+and a median-by-year trend. Zero web dependencies, pure standard library.
 
 ## CLI (same engine, no browser)
 
@@ -97,14 +97,14 @@ python3 -m src.ingest data/raw/odot_export.xlsx \
 | `pay_items` | ODOT item catalog              | item_code, description, unit                          |
 | `bid_lines` | project × item × **bidder**    | quantity, unit_price, bidder_rank, is_awarded         |
 
-Keeping the per-bidder grain is what makes "where does my number land" possible — we
+Keeping the per-bidder grain is what makes "where does my number land" possible: we
 retain the whole spread, not just the awarded price. See [`schema.sql`](schema.sql).
 
 ---
 
 ## Roadmap / open items
 
-- [x] Parse ODOT annual Bid Tabs PDFs into the DB (per-bidder grain) — `src/parse_bidtabs.py`.
+- [x] Parse ODOT annual Bid Tabs PDFs into the DB (per-bidder grain) via `src/parse_bidtabs.py`.
 - [x] Web app with item search, distribution histogram, percentile benchmarking, year trend.
 - [ ] Backfill more years (2001–2022 PDFs already located) for deeper history.
 - [ ] Capture **district/county** (derivable from the route prefix, e.g. `DEL-SR 521`)

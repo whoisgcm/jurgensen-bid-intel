@@ -1,6 +1,6 @@
 """Export the SQLite database into static JSON for GitHub Pages.
 
-GitHub Pages serves only static files — no Python, no SQLite. So we bake the
+GitHub Pages serves only static files (no Python, no SQLite), so we bake the
 data the UI needs into JSON:
 
     docs/data/index.json         search index: [{code,desc,unit,n}, ...]
@@ -52,7 +52,7 @@ def main():
 
     (OUT / "index.json").write_text(json.dumps(index, separators=(",", ":")))
 
-    # meta.json — headline dataset stats for the landing screen (kept accurate
+    # meta.json: headline dataset stats for the landing screen (kept accurate
     # by regenerating here whenever the data changes).
     one = lambda s: conn.execute(s).fetchone()[0]
     rng = conn.execute("SELECT MIN(sale_date), MAX(sale_date) FROM projects WHERE sale_date IS NOT NULL").fetchone()

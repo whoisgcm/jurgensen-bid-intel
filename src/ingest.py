@@ -1,7 +1,7 @@
 """Ingest ODOT bid data exports into the local database.
 
 ODOT publishes bid data as Excel/CSV exports (and interactive Power BI). This
-module reads a *flat* export — one row per (project, item, bidder) — and
+module reads a *flat* export (one row per project, item, bidder) and
 normalizes it into the projects / pay_items / bid_lines tables.
 
 The expected input columns are listed in COLUMNS below. They mirror the fields

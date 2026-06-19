@@ -105,14 +105,14 @@
 <section class="hero" id="hero">
   <div class="hero-inner">
     <h1 class="hero-h1">Know where your bid stands.</h1>
-    <p class="hero-sub">Benchmark any ODOT pay item against three years of real, awarded bid history — see the full price spread and exactly where your number lands, in seconds.</p>
+    <p class="hero-sub">Benchmark any ODOT pay item against three years of real, awarded bid history. See the full price spread and exactly where your number lands, in seconds.</p>
     <div class="search">
-      <input id="q" placeholder="Search a pay item — try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
+      <input id="q" placeholder="Search a pay item, try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
       <div class="results" id="results"></div>
     </div>
     <div class="statrow" id="statrow"></div>
     <div class="featured">
-      <div class="feat-label">Popular pay items — tap to explore</div>
+      <div class="feat-label">Popular pay items · tap to explore</div>
       <div class="feat-grid" id="featgrid"></div>
     </div>
   </div>
@@ -140,7 +140,7 @@
           <input id="yourqty" type="number" step="1" placeholder="e.g. 4200">
         </div>
         <div class="verdict idle" id="verdict">
-          <div class="pct" id="v-pct">—</div>
+          <div class="pct" id="v-pct">-</div>
           <div class="lbl" id="v-lbl">Enter a unit price to benchmark it</div>
         </div>
         <div id="extension" class="caption"></div>
@@ -158,11 +158,11 @@
   </div>
 </div>
 
-<footer>Source: Ohio DOT Official Bid Tabulations (public), 2023–2025. Prototype for evaluation — not for bid submission.</footer>
+<footer>Source: Ohio DOT Official Bid Tabulations (public), 2023–2025. Prototype for evaluation, not for bid submission.</footer>
 
 <script>
 const $ = s => document.querySelector(s);
-const money = n => n==null ? "—" : "$"+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+const money = n => n==null ? "-" : "$"+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 let STATS = null, INDEX = [];
 
 // Featured items shown as quick-pick chips on load.
@@ -170,7 +170,7 @@ const FEATURED = ["441E70000","254E01000","301E56000","203E10000","304E20000","6
 
 // ---- load metadata + search index once (static JSON) ----
 const MONTHS=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const fmtMonth=d=>{ if(!d)return"—"; const p=d.split("-"); return MONTHS[+p[1]]+" "+p[0]; };
+const fmtMonth=d=>{ if(!d)return"-"; const p=d.split("-"); return MONTHS[+p[1]]+" "+p[0]; };
 (async function init(){
   try{
     const [meta, idx] = await Promise.all([
@@ -301,13 +301,13 @@ function benchmark(){
   drawMarker();
   const v=parseFloat($("#yourprice").value), s=STATS;
   const card=$("#verdict");
-  if(!s||!s.count||isNaN(v)){card.className="verdict idle";$("#v-pct").textContent="—";
+  if(!s||!s.count||isNaN(v)){card.className="verdict idle";$("#v-pct").textContent="-";
     $("#v-lbl").textContent="Enter a unit price to benchmark it";$("#extension").textContent="";return;}
   const below=s.prices.filter(x=>x<v).length, pct=Math.round(100*below/s.prices.length);
   $("#v-pct").textContent=pct+"th %ile";
   let cls,msg;
-  if(pct<=30){cls="low";msg="Competitive / low — verify you're covering cost.";}
-  else if(pct>=75){cls="high";msg="High vs. history — you may be leaving the award on the table.";}
+  if(pct<=30){cls="low";msg="Competitive / low. Verify you're covering cost.";}
+  else if(pct>=75){cls="high";msg="High vs. history. You may be leaving the award on the table.";}
   else{cls="mid";msg="Mid-pack relative to historical ODOT bids.";}
   card.className="verdict "+cls; $("#v-lbl").textContent=msg;
   const qty=parseFloat($("#yourqty").value);
