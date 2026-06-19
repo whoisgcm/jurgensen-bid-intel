@@ -40,35 +40,50 @@ Data sources:
 
 ---
 
-## Quick start
+## Real ODOT data
 
-No dependencies needed for CSV (standard library only). Python 3.9+.
+ODOT publishes the **Official Bid Tabulations** as one PDF per year (2001–present,
+~5,500 pages each), free and login-free, from the estimating "Additional Downloads"
+section. Each project's header (letting date, work type, award) and every item's
+per-bidder unit prices extract cleanly. `src/parse_bidtabs.py` turns those PDFs into
+the database.
 
 ```bash
-# 1. Load the included sample dataset (realistic ODOT-style asphalt data)
-python3 -m src.ingest tests/sample_bid_data.csv
+python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 
-# 2. Find a pay item
-python3 -m src.query search asphalt
-
-# 3. See the historical price distribution for an item
-python3 -m src.query price 441E10100
-
-# 4. Narrow to District 8, 2024 only
-python3 -m src.query price 441E10100 --district 08 --since 2024-01-01
-
-# 5. Benchmark your own number against history (Phase 3 preview)
-python3 -m src.query price 441E10100 --estimate 105.00
+# Download a year (example) and parse it (~3 min/year, 5,500 pages)
+curl -L -o data/raw/bidtabs_2025.pdf \
+  "https://www.dot.state.oh.us/Divisions/ConstructionMgt/Estimating/CIS/Bid%20Tabs%202025.pdf"
+./.venv/bin/python -m src.parse_bidtabs data/raw/bidtabs_2025.pdf
 ```
 
-To ingest a real ODOT export with different column headers, remap them:
+Current local build: **2023–2025 = 1,462 projects, ~349k bid lines, ~4,000 pay items.**
+
+## Run the web app (the demo)
+
+```bash
+./.venv/bin/python -m src.server          # then open http://localhost:8000
+```
+
+Search a pay item → see its full historical unit-price distribution (min/p25/median/
+p75/max + quantity-weighted average), a histogram with **your number marked**, a
+percentile verdict (competitive / mid / high), a line-total vs. median comparison,
+and a median-by-year trend. Zero web dependencies — pure standard library.
+
+## CLI (same engine, no browser)
+
+```bash
+python3 -m src.query search asphalt
+python3 -m src.query price 441E70000
+python3 -m src.query price 441E70000 --since 2025-01-01 --estimate 350.00
+```
+
+To ingest a tabular export (CSV/XLSX) instead of a PDF, remap its headers:
 
 ```bash
 python3 -m src.ingest data/raw/odot_export.xlsx \
   --map "Item Code=item_code,Unit Price=unit_price,Sale Date=sale_date"
 ```
-
-(`.xlsx` ingestion needs `pip install -r requirements.txt`; CSV needs nothing.)
 
 ---
 
@@ -87,14 +102,17 @@ retain the whole spread, not just the awarded price. See [`schema.sql`](schema.s
 
 ## Roadmap / open items
 
-- [ ] Confirm the exact column layout of ODOT's current Excel export and lock the
-      default header map (sample uses our canonical names).
-- [ ] Build the scheduled ingest from BidX / ODOT for bidder-level tabs (the
-      aggregated price layer is Excel-exportable; per-bidder tabs may need scraping).
+- [x] Parse ODOT annual Bid Tabs PDFs into the DB (per-bidder grain) — `src/parse_bidtabs.py`.
+- [x] Web app with item search, distribution histogram, percentile benchmarking, year trend.
+- [ ] Backfill more years (2001–2022 PDFs already located) for deeper history.
+- [ ] Capture **district/county** (derivable from the route prefix, e.g. `DEL-SR 521`)
+      to enable regional filtering.
+- [ ] Quantity-band filter in the UI (API already supports `min_qty`/`max_qty`) so
+      prices compare at similar scale.
 - [ ] Inflation / asphalt-index normalization so old prices compare fairly to today.
-- [ ] Phase 2 takeoff sheet → full estimate.
+- [ ] Phase 2: takeoff sheet → full estimate.
 
 ## Status
 
-Phase 1 scaffold. Standalone (not tied to HCSS HeavyBid). Runs end-to-end on the
-included sample data.
+**Phase 1 working** on real ODOT data (2023–2025). Standalone (not tied to HCSS
+HeavyBid). `python -m src.server` launches the demo UI.

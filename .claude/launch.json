@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bid-intel",
+      "runtimeExecutable": "./.venv/bin/python",
+      "runtimeArgs": ["-m", "src.server", "8000"],
+      "port": 8000
+    }
+  ]
+}
