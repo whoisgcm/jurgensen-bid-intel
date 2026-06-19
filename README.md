@@ -6,6 +6,8 @@ the market has actually bid** for the same pay item, quantity, district, and era
 
 Built for The Jurgensen Company (heavy-highway / asphalt, ODOT District 8 region).
 
+**▶ Live app: https://zgiglio.github.io/jurgensen-bid-intel/**  (no install — just open it)
+
 ---
 
 ## Why this works
