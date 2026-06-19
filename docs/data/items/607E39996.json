@@ -1,1 +1,1 @@
-{"item":"607E39996","description":"TEMPORARY VANDAL FENCE, TYPE C","unit":"FT","count":5,"min":28.0,"p25":28.0,"median":35.0,"p75":52.0,"max":92.68,"wavg":47.13600000000001,"window":["2024-02-22","2024-02-22"],"prices":[28.0,28.0,35.0,52.0,92.68],"trend":[{"year":"2024","median":35.0,"n":5}]}
+{"item":"607E39996","description":"TEMPORARY VANDAL FENCE, TYPE C","unit":"FT","count":5,"window":["2024-02-22","2024-02-22"],"trend":[{"year":"2024","median":35.0,"n":5}],"obs":[[197.0,28.0],[197.0,28.0],[197.0,35.0],[197.0,92.68],[197.0,52.0]]}

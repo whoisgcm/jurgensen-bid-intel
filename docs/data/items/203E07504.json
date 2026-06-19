@@ -1,1 +1,1 @@
-{"item":"203E07504","description":"SPECIAL - WICK DRAIN","unit":"FT","count":5,"min":1.85,"p25":2.0,"median":2.5,"p75":3.0,"max":4.0,"wavg":2.67,"window":["2023-03-09","2023-03-09"],"prices":[1.85,2.0,2.5,3.0,4.0],"trend":[{"year":"2023","median":2.5,"n":5}]}
+{"item":"203E07504","description":"SPECIAL - WICK DRAIN","unit":"FT","count":5,"window":["2023-03-09","2023-03-09"],"trend":[{"year":"2023","median":2.5,"n":5}],"obs":[[54647.0,1.85],[54647.0,2.0],[54647.0,4.0],[54647.0,3.0],[54647.0,2.5]]}

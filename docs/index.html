@@ -64,6 +64,10 @@
   .head .code{font-size:13px;color:var(--slate);font-weight:600;letter-spacing:.5px}
   .head h2{margin:2px 0 0;font-size:22px;font-weight:700;font-family:"Rubik",sans-serif}
   .head .meta{color:var(--slate);font-size:13px;margin-left:auto;text-align:right;line-height:1.5}
+  .bandbar{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 0;font-size:13px;color:var(--slate)}
+  .bandbar select{padding:8px 11px;font-size:13.5px;border:1px solid var(--line);border-radius:8px;background:#fff;font-family:inherit;cursor:pointer}
+  .bandbar select:focus{outline:none;border-color:var(--green)}
+  .bandnote{color:var(--green);font-weight:600}
   .grid{display:grid;grid-template-columns:340px 1fr;gap:18px;margin-top:18px}
   @media(max-width:760px){.grid{grid-template-columns:1fr}}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
@@ -105,7 +109,7 @@
 <section class="hero" id="hero">
   <div class="hero-inner">
     <h1 class="hero-h1">Know where your bid stands.</h1>
-    <p class="hero-sub">Benchmark any ODOT pay item against three years of real, awarded bid history. See the full price spread and exactly where your number lands, in seconds.</p>
+    <p class="hero-sub">Benchmark any ODOT pay item against four years of real, awarded bid history. Filter to jobs the size of yours, and see exactly where your number lands, in seconds.</p>
     <div class="search">
       <input id="q" placeholder="Search a pay item, try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
       <div class="results" id="results"></div>
@@ -126,6 +130,12 @@
         <h2 id="p-desc"></h2>
       </div>
       <div class="meta" id="p-meta"></div>
+    </div>
+
+    <div class="bandbar" id="bandbar">
+      <label for="band" style="margin:0;color:var(--slate)">Compare against job size:</label>
+      <select id="band"></select>
+      <span class="bandnote" id="bandnote"></span>
     </div>
 
     <div class="grid">
@@ -158,7 +168,7 @@
   </div>
 </div>
 
-<footer>Source: Ohio DOT Official Bid Tabulations (public), 2023–2025. Prototype for evaluation, not for bid submission.</footer>
+<footer>Source: Ohio DOT Official Bid Tabulations (public), 2022–2025. Prototype for evaluation, not for bid submission.</footer>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -220,20 +230,84 @@ $("#q").addEventListener("input", e=>{
   },140);
 });
 
+let BANDS=[], VIEW=null, bandLocked=false;
+
 async function select(code){
   $("#results").style.display="none"; $("#q").value="";
   STATS = await fetch("data/items/"+code+".json").then(r=>r.json());
-  const s=STATS;
-  $("#p-code").textContent=s.item;
-  $("#p-desc").textContent=s.description||s.item;
-  $("#u1").textContent=s.unit||"unit";
-  $("#p-meta").innerHTML = s.count
-     ? `${s.count.toLocaleString()} bid observations<br>${s.window?s.window[0]+" → "+s.window[1]:""}`
-     : "no data";
-  renderStats(s); renderHist(s); renderTrend(s.trend||[], s.unit);
+  $("#p-code").textContent=STATS.item;
+  $("#p-desc").textContent=STATS.description||STATS.item;
+  $("#u1").textContent=STATS.unit||"unit";
+  $("#yourprice").value=""; $("#yourqty").value=""; bandLocked=false;
+  buildBands(STATS); $("#band").value="all";
+  renderTrend(STATS.trend||[], STATS.unit);
+  applyBand();
   $("#hero").style.display="none"; $("#panel").style.display="block";
-  $("#yourprice").value=""; $("#yourqty").value=""; benchmark();
   $("#panel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+const fmtQ = n => n>=1000 ? Math.round(n).toLocaleString() : (Number.isInteger(n)? String(n) : n.toFixed(1));
+function pctile(a,p){ if(!a.length) return null; if(a.length===1) return a[0];
+  const k=(a.length-1)*p/100, lo=Math.floor(k), hi=Math.min(lo+1,a.length-1);
+  return a[lo]+(a[hi]-a[lo])*(k-lo); }
+function ord(n){ const s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
+
+// Build quantity bands from the item's own quantity quartiles, so "Typical",
+// "Small", "Large" mean like-for-like jobs for THIS item.
+function buildBands(it){
+  const qs = it.obs.map(o=>o[0]).filter(v=>v!=null && v>0).sort((a,b)=>a-b);
+  BANDS = [{key:"all", label:"All job sizes", n:it.obs.length}];
+  if(qs.length>=12){
+    const at=f=>qs[Math.min(qs.length-1,Math.max(0,Math.round(f*(qs.length-1))))];
+    const q1=at(0.25), q3=at(0.75), u=it.unit||"";
+    if(q3>q1){
+      BANDS.push({key:"s", lo:-Infinity, hi:q1, label:`Small (≤ ${fmtQ(q1)} ${u})`,
+                  n:it.obs.filter(o=>o[0]!=null&&o[0]<=q1).length});
+      BANDS.push({key:"m", lo:q1, hi:q3, label:`Typical (${fmtQ(q1)}–${fmtQ(q3)} ${u})`,
+                  n:it.obs.filter(o=>o[0]!=null&&o[0]>q1&&o[0]<=q3).length});
+      BANDS.push({key:"l", lo:q3, hi:Infinity, label:`Large (> ${fmtQ(q3)} ${u})`,
+                  n:it.obs.filter(o=>o[0]!=null&&o[0]>q3).length});
+      BANDS._q1=q1; BANDS._q3=q3;
+    }
+  }
+  $("#band").innerHTML = BANDS.map(b=>`<option value="${b.key}">${b.label} · ${b.n.toLocaleString()} bids</option>`).join("");
+  $("#bandbar").style.display = BANDS.length>1 ? "flex":"none";
+}
+
+function filterObs(it,key){
+  if(key==="all") return it.obs;
+  const b=BANDS.find(x=>x.key===key); if(!b) return it.obs;
+  return it.obs.filter(o=> o[0]!=null && o[0]>b.lo && o[0]<=b.hi);
+}
+
+function computeView(it,obs){
+  const prices=obs.map(o=>o[1]).filter(v=>v!=null).sort((a,b)=>a-b);
+  const wq=obs.filter(o=>o[0]!=null && o[0]>0);
+  let wavg=null;
+  if(wq.length){ const qs=wq.reduce((a,o)=>a+o[0],0); wavg=wq.reduce((a,o)=>a+o[0]*o[1],0)/qs; }
+  return {item:it.item, description:it.description, unit:it.unit, window:it.window,
+    count:prices.length, min:prices[0], p25:pctile(prices,25), median:pctile(prices,50),
+    p75:pctile(prices,75), max:prices[prices.length-1], wavg, prices};
+}
+
+function applyBand(){
+  const key=$("#band").value;
+  VIEW=computeView(STATS, filterObs(STATS,key));
+  $("#p-meta").innerHTML = VIEW.count
+     ? `${VIEW.count.toLocaleString()} bid observations<br>${VIEW.window?VIEW.window[0]+" → "+VIEW.window[1]:""}`
+     : "no data";
+  $("#bandnote").textContent = key==="all" ? "" : `benchmarking against ${VIEW.count.toLocaleString()} similar-size bids`;
+  renderStats(VIEW); renderHist(VIEW); benchmark();
+}
+$("#band").addEventListener("change", ()=>{ bandLocked=true; applyBand(); });
+
+// When a takeoff quantity is entered, auto-jump to the band it falls in (unless
+// the user has manually picked a band).
+function maybeAutoBand(){
+  if(bandLocked || BANDS.length<=1) return;
+  const q=parseFloat($("#yourqty").value); if(isNaN(q)) return;
+  const key = q<=BANDS._q1 ? "s" : (q<=BANDS._q3 ? "m" : "l");
+  if($("#band").value!==key){ $("#band").value=key; applyBand(); }
 }
 
 function renderStats(s){
@@ -296,15 +370,16 @@ function renderTrend(tr,unit){
 }
 
 // ---- benchmarking ----
-$("#yourprice").addEventListener("input",benchmark); $("#yourqty").addEventListener("input",benchmark);
+$("#yourprice").addEventListener("input",benchmark);
+$("#yourqty").addEventListener("input",()=>{ maybeAutoBand(); benchmark(); });
 function benchmark(){
   drawMarker();
-  const v=parseFloat($("#yourprice").value), s=STATS;
+  const v=parseFloat($("#yourprice").value), s=VIEW;
   const card=$("#verdict");
   if(!s||!s.count||isNaN(v)){card.className="verdict idle";$("#v-pct").textContent="-";
     $("#v-lbl").textContent="Enter a unit price to benchmark it";$("#extension").textContent="";return;}
   const below=s.prices.filter(x=>x<v).length, pct=Math.round(100*below/s.prices.length);
-  $("#v-pct").textContent=pct+"th %ile";
+  $("#v-pct").textContent=ord(pct)+" %ile";
   let cls,msg;
   if(pct<=30){cls="low";msg="Competitive / low. Verify you're covering cost.";}
   else if(pct>=75){cls="high";msg="High vs. history. You may be leaving the award on the table.";}

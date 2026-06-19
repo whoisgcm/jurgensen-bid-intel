@@ -1,1 +1,1 @@
-{"item":"630E87511","description":"REMOVAL OF POLE MOUNTED SIGN AND STORAGE, AS PER P","unit":"EACH","count":5,"min":22.0,"p25":25.0,"median":29.33,"p75":35.0,"max":50.0,"wavg":32.888333333333335,"window":["2023-04-13","2023-07-13"],"prices":[22.0,25.0,29.33,35.0,50.0],"trend":[{"year":"2023","median":29.33,"n":5}]}
+{"item":"630E87511","description":"REMOVAL OF POLE MOUNTED SIGN AND STORAGE, AS PER P","unit":"EACH","count":5,"window":["2023-04-13","2023-07-13"],"trend":[{"year":"2023","median":29.33,"n":5}],"obs":[[9.0,22.0],[9.0,50.0],[6.0,29.33],[6.0,35.0],[6.0,25.0]]}

@@ -1,1 +1,1 @@
-{"item":"632E66104","description":"POWER CABLE, 3 CONDUCTOR, NO. 10 AWG","unit":"FT","count":7,"min":3.35,"p25":3.925,"median":5.0,"p75":5.325,"max":6.85,"wavg":4.81198738170347,"window":["2023-08-10","2023-12-14"],"prices":[3.35,3.85,4.0,5.0,5.15,5.5,6.85],"trend":[{"year":"2023","median":5.0,"n":7}]}
+{"item":"632E66104","description":"POWER CABLE, 3 CONDUCTOR, NO. 10 AWG","unit":"FT","count":7,"window":["2023-08-10","2023-12-14"],"trend":[{"year":"2023","median":5.0,"n":7}],"obs":[[44.0,5.0],[44.0,3.85],[44.0,5.15],[44.0,5.5],[47.0,6.85],[47.0,4.0],[47.0,3.35]]}

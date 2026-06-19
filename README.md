@@ -59,7 +59,9 @@ curl -L -o data/raw/bidtabs_2025.pdf \
 ./.venv/bin/python -m src.parse_bidtabs data/raw/bidtabs_2025.pdf
 ```
 
-Current build: **2023–2025 = 1,824 projects, 424,461 bid prices, 3,312 benchmarkable pay items.**
+Current build: **2022–2025 = 2,496 projects, 580,705 bid prices, 3,655 benchmarkable pay items.**
+Per-item data ships as (quantity, unit_price) pairs so the app can filter to
+like-size jobs and recompute the distribution client-side.
 
 ## Run the web app (the demo)
 

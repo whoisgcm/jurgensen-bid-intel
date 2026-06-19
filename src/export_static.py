@@ -4,13 +4,13 @@ GitHub Pages serves only static files (no Python, no SQLite), so we bake the
 data the UI needs into JSON:
 
     docs/data/index.json         search index: [{code,desc,unit,n}, ...]
-    docs/data/items/<code>.json  per item: full price stats + sorted prices + yearly trend
+    docs/data/meta.json          headline dataset stats for the landing screen
+    docs/data/items/<code>.json  per item: (quantity, unit_price) observations
+                                  + yearly trend. The browser filters the
+                                  observations by quantity band and recomputes
+                                  the distribution / benchmark client-side.
 
-The browser then does search (filter the index) and benchmarking (percentile of
-the user's price against the sorted list) entirely client-side. Re-run this
-whenever the database changes:
-
-    python -m src.export_static
+Re-run whenever the database changes:  python -m src.export_static
 """
 from __future__ import annotations
 
@@ -19,8 +19,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from src.db import connect           # noqa: E402
-from src.server import price_stats, trend  # noqa: E402  (reuse the exact same math)
+from src.db import connect    # noqa: E402
+from src.server import trend  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "data"
@@ -41,13 +41,25 @@ def main():
     index = []
     for r in items:
         code = r["item_code"]
-        s = price_stats(conn, code, {})
-        if not s.get("count"):
-            continue
-        s["trend"] = trend(conn, code)
-        # round prices to cut file size; keep cents
-        s["prices"] = [round(x, 2) for x in s["prices"]]
-        (OUT / "items" / f"{code}.json").write_text(json.dumps(s, separators=(",", ":")))
+        rows = conn.execute(
+            "SELECT quantity, unit_price FROM bid_lines WHERE item_code = ? AND unit_price IS NOT NULL",
+            (code,),
+        ).fetchall()
+        # [quantity, unit_price] pairs; quantity may be null (kept, but unbandable)
+        obs = [[round(o["quantity"], 2) if o["quantity"] is not None else None,
+                round(o["unit_price"], 2)] for o in rows]
+        rng = conn.execute(
+            """SELECT MIN(p.sale_date), MAX(p.sale_date)
+               FROM bid_lines b JOIN projects p ON p.project_id = b.project_id
+               WHERE b.item_code = ? AND p.sale_date IS NOT NULL""",
+            (code,),
+        ).fetchone()
+        rec = {
+            "item": code, "description": r["description"], "unit": r["unit"],
+            "count": len(obs), "window": list(rng) if rng and rng[0] else None,
+            "trend": trend(conn, code), "obs": obs,
+        }
+        (OUT / "items" / f"{code}.json").write_text(json.dumps(rec, separators=(",", ":")))
         index.append({"code": code, "desc": r["description"], "unit": r["unit"], "n": r["n"]})
 
     (OUT / "index.json").write_text(json.dumps(index, separators=(",", ":")))

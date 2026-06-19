@@ -1,1 +1,1 @@
-{"item":"647E20076","description":"CROSSWALK LINE, 24\", TYPE A125","unit":"FT","count":5,"min":17.5,"p25":21.0,"median":25.0,"p75":25.0,"max":25.0,"wavg":22.7,"window":["2025-12-04","2025-12-04"],"prices":[17.5,21.0,25.0,25.0,25.0],"trend":[{"year":"2025","median":25.0,"n":5}]}
+{"item":"647E20076","description":"CROSSWALK LINE, 24\", TYPE A125","unit":"FT","count":5,"window":["2025-12-04","2025-12-04"],"trend":[{"year":"2025","median":25.0,"n":5}],"obs":[[686.0,21.0],[686.0,25.0],[686.0,25.0],[686.0,25.0],[686.0,17.5]]}
