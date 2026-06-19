@@ -18,7 +18,7 @@
   body{margin:0;font-family:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
        background:var(--bg);color:var(--ink);}
   header{background:var(--navy);color:#fff;padding:14px 28px;display:flex;align-items:center;gap:13px;
-         border-bottom:3px solid var(--green);box-shadow:0 2px 12px rgba(0,0,0,.18)}
+         border-bottom:3px solid var(--green);box-shadow:0 2px 12px rgba(0,0,0,.18);cursor:pointer}
   header .logo{width:42px;height:42px;border-radius:7px;background:var(--green);color:#fff;
        font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:27px;
        display:flex;align-items:center;justify-content:center;line-height:1;flex:none}
@@ -26,6 +26,23 @@
   header .prod{font-size:11.5px;color:#9bd3ad;letter-spacing:.6px;margin-top:3px;text-transform:uppercase}
   header .tag{font-size:12.5px;color:#b9bdb9;align-self:center;margin-left:8px}
   header .badge{margin-left:auto;font-size:11px;color:#bfe3c8;border:1px solid #2f7d46;padding:3px 10px;border-radius:20px;letter-spacing:.3px}
+  .hero{background:linear-gradient(180deg,#ffffff 0%,#eef4ef 100%);border-bottom:1px solid var(--line);padding:48px 20px 44px}
+  .hero-inner{max-width:880px;margin:0 auto;text-align:center}
+  .hero-h1{font-family:"Rubik",sans-serif;font-weight:700;font-size:34px;margin:0 0 12px;letter-spacing:-.4px;color:var(--ink)}
+  .hero-sub{font-size:16px;color:var(--slate);max-width:640px;margin:0 auto 26px;line-height:1.55}
+  .hero .search{max-width:660px;margin:0 auto}
+  .statrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:32px auto 0}
+  .stile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 22px;min-width:148px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .stile .big{font-family:"Rubik",sans-serif;font-weight:700;font-size:25px;color:var(--green);line-height:1}
+  .stile .cap{font-size:12px;color:var(--slate);margin-top:6px;letter-spacing:.2px}
+  .featured{max-width:760px;margin:34px auto 0}
+  .feat-label{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--slate);margin-bottom:11px}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:640px){.feat-grid{grid-template-columns:1fr 1fr}}
+  .fcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left;transition:.15s}
+  .fcard:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(20,153,71,.13);transform:translateY(-1px)}
+  .fcard .ft{font-weight:600;font-size:13.5px;line-height:1.25}
+  .fcard .fn{font-size:11.5px;color:var(--slate);margin-top:5px;font-variant-numeric:tabular-nums}
   .wrap{max-width:980px;margin:26px auto;padding:0 20px}
   .search{position:relative}
   .search input{width:100%;padding:14px 16px;font-size:16px;border:1px solid var(--line);border-radius:10px;
@@ -85,14 +102,23 @@
   <span class="badge">prototype · GCM</span>
 </header>
 
-<div class="wrap">
-  <div class="search">
-    <input id="q" placeholder="Search a pay item — try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
-    <div class="results" id="results"></div>
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <h1 class="hero-h1">Know where your bid stands.</h1>
+    <p class="hero-sub">Benchmark any ODOT pay item against three years of real, awarded bid history — see the full price spread and exactly where your number lands, in seconds.</p>
+    <div class="search">
+      <input id="q" placeholder="Search a pay item — try “asphalt”, “excavation”, “concrete”…" autocomplete="off">
+      <div class="results" id="results"></div>
+    </div>
+    <div class="statrow" id="statrow"></div>
+    <div class="featured">
+      <div class="feat-label">Popular pay items — tap to explore</div>
+      <div class="feat-grid" id="featgrid"></div>
+    </div>
   </div>
-  <div class="hint" id="hint">Loading bid history…</div>
-  <div class="chips" id="chips"></div>
+</section>
 
+<div class="wrap">
   <div class="panel" id="panel">
     <div class="head">
       <div>
@@ -142,20 +168,39 @@ let STATS = null, INDEX = [];
 // Featured items shown as quick-pick chips on load.
 const FEATURED = ["441E70000","254E01000","301E56000","203E10000","304E20000","614E11000"];
 
-// ---- load search index once (static JSON) ----
+// ---- load metadata + search index once (static JSON) ----
+const MONTHS=["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmtMonth=d=>{ if(!d)return"—"; const p=d.split("-"); return MONTHS[+p[1]]+" "+p[0]; };
 (async function init(){
   try{
-    INDEX = await fetch("data/index.json").then(r=>r.json());
-    $("#hint").textContent = `Search ${INDEX.length.toLocaleString()} ODOT pay items by code or description. Data: Official ODOT Bid Tabulations, 2023–2025.`;
+    const [meta, idx] = await Promise.all([
+      fetch("data/meta.json").then(r=>r.json()),
+      fetch("data/index.json").then(r=>r.json())
+    ]);
+    INDEX = idx;
+    const yrs = meta.date_range.map(d=>d.slice(0,4));
+    const tiles=[
+      [meta.bid_lines.toLocaleString(), "competitor bid prices"],
+      [meta.projects.toLocaleString(), `projects let, ${yrs[0]}–${yrs[1]}`],
+      [meta.pay_items.toLocaleString(), "pay items tracked"],
+      [fmtMonth(meta.date_range[1]), "most recent letting"],
+    ];
+    $("#statrow").innerHTML = tiles.map(([b,c])=>
+      `<div class="stile"><div class="big">${b}</div><div class="cap">${c}</div></div>`).join("");
     const byCode = Object.fromEntries(INDEX.map(it=>[it.code,it]));
-    const chips = FEATURED.map(c=>byCode[c]).filter(Boolean);
-    if(chips.length){
-      $("#chips").innerHTML = "<span>Try:</span>" + chips.map(it=>
-        `<span class="chip" data-code="${it.code}">${(it.desc||it.code).split(",")[0].slice(0,28)}</span>`).join("");
-      $("#chips").querySelectorAll(".chip").forEach(c=>c.onclick=()=>select(c.dataset.code));
-    }
-  }catch(e){ $("#hint").textContent="Could not load bid data."; }
+    const feats = FEATURED.map(c=>byCode[c]).filter(Boolean);
+    $("#featgrid").innerHTML = feats.map(it=>`<div class="fcard" data-code="${it.code}">
+        <div class="ft">${(it.desc||it.code).split(",")[0]}</div>
+        <div class="fn">${it.code} · ${it.n.toLocaleString()} bids · ${it.unit||""}</div></div>`).join("");
+    $("#featgrid").querySelectorAll(".fcard").forEach(c=>c.onclick=()=>select(c.dataset.code));
+  }catch(e){ $("#statrow").innerHTML="<div class='stile'>Could not load bid data.</div>"; }
 })();
+
+function resetHome(){
+  $("#panel").style.display="none"; $("#hero").style.display=""; $("#q").value="";
+  $("#results").style.display="none"; window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelector("header").addEventListener("click", resetHome);
 
 // ---- search (client-side filter of the index) ----
 let t;
@@ -186,7 +231,7 @@ async function select(code){
      ? `${s.count.toLocaleString()} bid observations<br>${s.window?s.window[0]+" → "+s.window[1]:""}`
      : "no data";
   renderStats(s); renderHist(s); renderTrend(s.trend||[], s.unit);
-  $("#panel").style.display="block"; $("#hint").style.display="none"; $("#chips").style.display="none";
+  $("#hero").style.display="none"; $("#panel").style.display="block";
   $("#yourprice").value=""; $("#yourqty").value=""; benchmark();
   $("#panel").scrollIntoView({behavior:"smooth",block:"start"});
 }

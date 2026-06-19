@@ -51,6 +51,25 @@ def main():
         index.append({"code": code, "desc": r["description"], "unit": r["unit"], "n": r["n"]})
 
     (OUT / "index.json").write_text(json.dumps(index, separators=(",", ":")))
+
+    # meta.json — headline dataset stats for the landing screen (kept accurate
+    # by regenerating here whenever the data changes).
+    one = lambda s: conn.execute(s).fetchone()[0]
+    rng = conn.execute("SELECT MIN(sale_date), MAX(sale_date) FROM projects WHERE sale_date IS NOT NULL").fetchone()
+    by_year = [{"year": r[0], "projects": r[1], "bids": r[2]} for r in conn.execute(
+        """SELECT substr(p.sale_date,1,4) y, COUNT(DISTINCT p.project_id),
+                  SUM((SELECT COUNT(*) FROM bid_lines b WHERE b.project_id=p.project_id AND b.unit_price IS NOT NULL))
+           FROM projects p WHERE p.sale_date IS NOT NULL GROUP BY y ORDER BY y""")]
+    meta = {
+        "bid_lines": one("SELECT COUNT(*) FROM bid_lines WHERE unit_price IS NOT NULL"),
+        "projects": one("SELECT COUNT(*) FROM projects"),
+        "pay_items": len(index),
+        "date_range": list(rng),
+        "by_year": by_year,
+        "avg_bidders": round(one("SELECT AVG(num_bidders) FROM projects WHERE num_bidders IS NOT NULL"), 1),
+    }
+    (OUT / "meta.json").write_text(json.dumps(meta, separators=(",", ":")))
+
     total = sum(f.stat().st_size for f in (OUT / "items").glob("*.json"))
     print(f"Exported {len(index):,} items to {OUT}  "
           f"(index {(OUT/'index.json').stat().st_size//1024} KB, "

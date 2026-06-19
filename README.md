@@ -59,7 +59,7 @@ curl -L -o data/raw/bidtabs_2025.pdf \
 ./.venv/bin/python -m src.parse_bidtabs data/raw/bidtabs_2025.pdf
 ```
 
-Current local build: **2023–2025 = 1,462 projects, ~349k bid lines, ~4,000 pay items.**
+Current build: **2023–2025 = 1,824 projects, 424,461 bid prices, 3,312 benchmarkable pay items.**
 
 ## Run the web app (the demo)
 
