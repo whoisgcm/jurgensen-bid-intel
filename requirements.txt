@@ -1,0 +1,3 @@
+# Core (ingest + query) runs on the Python standard library — no install needed.
+# Optional: only required to ingest native .xlsx exports (CSV needs nothing).
+openpyxl>=3.1

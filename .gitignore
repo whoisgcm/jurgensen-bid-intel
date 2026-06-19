@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local database + raw ODOT downloads (regenerable, can be large)
+data/*.db
+data/raw/*
+!data/raw/.gitkeep
+
+# OS
+.DS_Store
