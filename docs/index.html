@@ -100,6 +100,18 @@
   .stat .k{font-size:11px;color:var(--slate);text-transform:uppercase;letter-spacing:.4px}
   .stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums;margin-top:3px}
   .stat.hl{background:#ecf7ef;border-color:#bfe3c8}
+  .outhead{font-size:13.5px;line-height:1.55;color:var(--ink);margin-bottom:4px}
+  .outrow{display:flex;gap:13px;padding:11px 2px;border-top:1px solid #f0f3f6;align-items:flex-start}
+  .outrow .cnt{flex:none;min-width:46px;text-align:center;font-family:"Rubik",sans-serif;font-weight:700;
+               font-size:17px;color:var(--ink);background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+  .outrow .t{font-weight:600;font-size:13.5px}
+  .outrow .x{font-size:12.5px;color:var(--slate);margin-top:3px;line-height:1.5}
+  .outtable-wrap{overflow-x:auto;margin-top:14px}
+  table.outtable{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+  .outtable th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--slate);
+               padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .outtable td{padding:7px 8px;border-bottom:1px solid #f0f3f6;white-space:nowrap}
+  .outtable .rtag{font-size:11px;font-weight:600;border-radius:10px;padding:2px 8px;background:#eef2f6;color:var(--slate)}
   .chartwrap{margin-top:6px}
   svg{width:100%;display:block}
   .axis{fill:var(--slate);font-size:10px} .bar{fill:#b6d8bf} .bar:hover{fill:var(--green)}
@@ -192,6 +204,14 @@
         <div class="chartwrap"><svg id="trend" viewBox="0 0 560 150" preserveAspectRatio="none"></svg></div>
       </div>
     </div>
+
+    <div class="card" id="outcard" style="display:none;margin-top:18px">
+      <h3>Outlier insights · why the high numbers are high</h3>
+      <div class="outhead" id="out-head"></div>
+      <div id="out-rows"></div>
+      <div class="outtable-wrap"><table class="outtable" id="out-table"></table></div>
+      <div class="caption" id="out-note" style="text-align:left"></div>
+    </div>
   </div>
 </div>
 
@@ -262,6 +282,7 @@ let BANDS=[], VIEW=null, WINVIEW=null, bandLocked=false;
 async function select(code){
   $("#results").style.display="none"; $("#q").value="";
   STATS = await fetch("data/items/"+code+".json").then(r=>r.json());
+  annotateProjects(STATS);
   $("#p-code").textContent=STATS.item;
   $("#p-desc").textContent=STATS.description||STATS.item;
   $("#u1").textContent=STATS.unit||"unit";
@@ -325,7 +346,7 @@ function applyBand(){
      ? `${VIEW.count.toLocaleString()} bid observations<br>${VIEW.window?VIEW.window[0]+" → "+VIEW.window[1]:""}`
      : "no data";
   $("#bandnote").textContent = key==="all" ? "" : `benchmarking against ${VIEW.count.toLocaleString()} similar-size bids`;
-  renderStats(VIEW); renderHist(VIEW); renderWin(obs); benchmark();
+  renderStats(VIEW); renderHist(VIEW); renderWin(obs); renderOutliers(obs); benchmark();
 }
 $("#band").addEventListener("change", ()=>{ bandLocked=true; applyBand(); });
 
@@ -430,6 +451,108 @@ function renderTrend(tr,unit){
   svg.innerHTML=g;
 }
 
+// ---- outlier insights ----
+// Rows in obs are exported per project with the winner first, then the losing
+// bidders at the same quantity. So a new "project field" starts at each winner
+// flag (or when the quantity changes, which catches the rare project with no
+// recorded winner). Each observation gets its same-project context attached:
+// _pn = bidders on that project, _omed = median of the OTHER bidders' prices,
+// _pmed = median of the whole field including this bid.
+function annotateProjects(it){
+  let g=null;
+  for(const o of it.obs){
+    if(o[2]===1 || !g || g.q!==o[0]) g={q:o[0], rows:[]};
+    g.rows.push(o); o._g=g;
+  }
+  for(const o of it.obs){
+    const peers=o._g.rows;
+    o._pn=peers.length;
+    const others=peers.filter(x=>x!==o).map(x=>x[1]).filter(v=>v!=null).sort((a,b)=>a-b);
+    o._omed=others.length? pctile(others,50) : null;
+    const all=peers.map(x=>x[1]).filter(v=>v!=null).sort((a,b)=>a-b);
+    o._pmed=pctile(all,50);
+  }
+}
+
+const pctf = x => Math.round(100*x)+"%";
+let OUT=null;
+
+function analyzeOutliers(obs){
+  const prices=obs.map(o=>o[1]).filter(v=>v!=null).sort((a,b)=>a-b);
+  if(prices.length<12) return null;
+  const p25=pctile(prices,25), p75=pctile(prices,75), med=pctile(prices,50);
+  const iqr=p75-p25;
+  const fence = iqr>0 ? p75+1.5*iqr : med*1.5;
+  const loFence = iqr>0 ? p25-1.5*iqr : null;
+  const qs=obs.map(o=>o[0]).filter(v=>v!=null&&v>0).sort((a,b)=>a-b);
+  // "Tiny quantity" only means something when quantities actually vary; on
+  // lump-sum lines (every qty = 1) it would swallow every outlier.
+  let tinyQ=null;
+  if(qs.length>=10){ const q10=pctile(qs,10); if(q10<pctile(qs,50)) tinyQ=q10; }
+  const outs=obs.filter(o=>o[1]!=null && o[1]>fence);
+  const lows=loFence!=null && loFence>0 ? obs.filter(o=>o[1]!=null && o[1]<loFence).length : 0;
+  const buckets={qty:[], lone:[], job:[], solo:[]};
+  for(const o of outs){
+    let k;
+    if(tinyQ!=null && o[0]!=null && o[0]<=tinyQ) k="qty";
+    else if(o._pn>=2 && o._omed!=null) k = o._omed>p75 ? "job" : "lone";
+    else k="solo";
+    buckets[k].push(o);
+  }
+  const won=outs.filter(o=>o[2]===1).length;
+  const wonAll=obs.filter(o=>o[2]===1).length;
+  return {fence, med, outs, buckets, lows, won,
+          winRate: outs.length? won/outs.length : 0,
+          baseWinRate: obs.length? wonAll/obs.length : 0,
+          n: obs.length};
+}
+
+const OUT_META={
+  qty:["Tiny quantity on the job",
+       "Fixed costs (mobilization, plant minimums, crew and traffic-control time) get spread over only a handful of units, so a normal total cost shows up as a huge unit price. Compare against the Small job-size band, not the overall median."],
+  lone:["One bidder far above the rest of the field",
+       "The other bidders on the same project priced this line normally. That pattern usually means a contractor who did not really want the work (a courtesy number) or shifted margin onto other lines (unbalanced bidding). It is noise, not a market price."],
+  job:["The whole field bid the job high",
+       "Every bidder on that project came in high on this line, which points at the job itself: night work, phasing, remote location, difficult access, a tight schedule, or (on lump-sum lines like mobilization) simply a much bigger contract. Real cost, but only for jobs like that one."],
+  solo:["Only one bidder on the letting",
+       "A single contractor bid the whole job, so there was no competitive check on the number. Sole-bidder prices tend to run high and say more about leverage than about cost."]
+};
+
+function renderOutliers(obs){
+  OUT=analyzeOutliers(obs);
+  const card=$("#outcard");
+  if(!OUT || !OUT.outs.length){ card.style.display="none"; return; }
+  card.style.display="block";
+  const u=STATS.unit||"unit", o=OUT;
+  const winCmp = o.winRate < 0.6*o.baseWinRate
+    ? `<b>${o.won}</b> of them (${pctf(o.winRate)}) came from the contract winner, vs ${pctf(o.baseWinRate)} of all bids, so numbers up there win far less often than the pack.`
+    : `<b>${o.won}</b> of them (${pctf(o.winRate)}) came from the contract winner, about the same rate as all bids (${pctf(o.baseWinRate)}), so on this item a high number does not by itself lose the work.`;
+  $("#out-head").innerHTML=
+    `<b>${o.outs.length.toLocaleString()}</b> of ${o.n.toLocaleString()} bids in this view are high outliers `+
+    `(above ${money(o.fence).replace(".00","")} per ${u}, the standard 1.5×IQR fence). `+
+    winCmp+` Here is what is driving them:`;
+  const order=Object.entries(o.buckets).filter(([,v])=>v.length).sort((a,b)=>b[1].length-a[1].length);
+  $("#out-rows").innerHTML=order.map(([k,v])=>`<div class="outrow">
+      <div class="cnt">${v.length.toLocaleString()}</div>
+      <div><div class="t">${OUT_META[k][0]}</div><div class="x">${OUT_META[k][1]}</div></div>
+    </div>`).join("");
+  const top=[...o.outs].sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const tag=x=>{for(const [k,v] of Object.entries(o.buckets)) if(v.includes(x)) return OUT_META[k][0]; return "";};
+  $("#out-table").innerHTML=
+    `<tr><th>Their price</th><th>vs median</th><th>Qty (${u})</th><th>Rest of field, same project</th><th>Won?</th><th>Likely reason</th></tr>`+
+    top.map(x=>`<tr>
+      <td><b>${money(x[1])}</b></td>
+      <td>${(x[1]/o.med).toFixed(1)}×</td>
+      <td>${x[0]!=null? fmtQ(x[0]) : "-"}</td>
+      <td>${x._omed!=null? money(x._omed) : "sole bidder"}</td>
+      <td>${x[2]===1? "✔ won" : "no"}</td>
+      <td><span class="rtag">${tag(x)}</span></td>
+    </tr>`).join("");
+  $("#out-note").textContent =
+    (o.lows? `${o.lows.toLocaleString()} bid${o.lows===1?" sits":"s sit"} far BELOW the pack too, usually penny prices on lines a bidder expects to underrun, the mirror image of unbalancing. ` : "")+
+    `Outliers are recomputed for the job-size band you have selected, so "high" always means high against like-for-like work.`;
+}
+
 // ---- benchmarking ----
 $("#yourprice").addEventListener("input",benchmark);
 $("#yourqty").addEventListener("input",()=>{ maybeAutoBand(); benchmark(); });
@@ -445,6 +568,10 @@ function benchmark(){
   if(pct<=30){cls="low";msg="Competitive / low. Verify you're covering cost.";}
   else if(pct>=75){cls="high";msg="High vs. history. You may be leaving the award on the table.";}
   else{cls="mid";msg="Mid-pack relative to historical ODOT bids.";}
+  if(OUT && v>OUT.fence){
+    cls="high";
+    msg=`A statistical outlier vs. this history. Historical bids past ${money(OUT.fence).replace(".00","")} won ${pctf(OUT.winRate)} of the time (all bids: ${pctf(OUT.baseWinRate)}). See the outlier insights below.`;
+  }
   card.className="verdict "+cls; $("#v-lbl").textContent=msg;
   const qty=parseFloat($("#yourqty").value);
   if(!isNaN(qty)){
