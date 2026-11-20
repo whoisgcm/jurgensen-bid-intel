@@ -14,3 +14,8 @@ data/raw/*
 
 # OS
 .DS_Store
+
+# Environment files: real values live in the hosting provider, never in git
+.env
+.env.*
+!.env.example
